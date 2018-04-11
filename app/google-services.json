@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "229565853745",
+    "firebase_url": "https://appointment-c057c.firebaseio.com",
+    "project_id": "appointment-c057c",
+    "storage_bucket": "appointment-c057c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229565853745:android:b61df1e097bc7ae9",
+        "android_client_info": {
+          "package_name": "com.suman.appointment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229565853745-bhiuom1kph1rv2i0qrbpb3rgs5j7v8cn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeMCGzB1k4uK2N2juPA6XPhfBsj4foG0o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
