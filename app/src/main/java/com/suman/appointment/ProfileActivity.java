@@ -42,11 +42,12 @@ public class ProfileActivity extends AppCompatActivity {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String name=dataSnapshot.child(u_id).child("name").getValue(String.class);
-                String ph=dataSnapshot.child(u_id).child("phone").getValue(String.class);
-                view_name.setText("name: "+name);
-                view_phone.setText("phone: "+ph);
-
+                if(dataSnapshot.exists()){
+                    String name=dataSnapshot.child(u_id).child("name").getValue().toString();
+                    String ph=dataSnapshot.child(u_id).child("phone").getValue().toString();
+                    view_name.setText("name: "+name);
+                    view_phone.setText("phone: "+ph);
+                }
             }
 
             @Override
