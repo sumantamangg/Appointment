@@ -40,7 +40,7 @@ public class CalenderActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                Log.d("date= ", Integer.toString(year));
+                //Log.d("date= ", Integer.toString(year));
                 String day=Integer.toString(dayOfMonth);
                 String mnth=Integer.toString(month+1);
                 String yr=Integer.toString(year);
@@ -49,6 +49,7 @@ public class CalenderActivity extends AppCompatActivity {
                 //ym.setText("unique id="+u_id);
                 Intent i = new Intent(CalenderActivity.this, PopupActivity.class);
                 i.putExtra("MY_kEY",u_id);
+                i.putExtra("date",yr+"-"+mnth+"-"+day);
                 startActivity(i);
 
 

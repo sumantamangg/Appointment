@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
                                 finish();
-                                startActivity(new Intent(getApplicationContext(), CalenderActivity.class));
+                                startActivity(new Intent(getApplicationContext(), WeekActivity.class));
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "Unuccessfull", Toast.LENGTH_SHORT).show();

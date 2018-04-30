@@ -37,6 +37,9 @@ public class PopupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup);
+
+        getSupportActionBar().setTitle(getIntent().getStringExtra("date"));
+
         hf= (EditText) findViewById(R.id.heading_field);
         af = (EditText) findViewById(R.id.agenda_field);
         rqbtn = (Button) findViewById(R.id.requestbtn);
@@ -68,7 +71,7 @@ public class PopupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please Enter your agenda", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested");
+                final MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested","temp");
                 mdatabase.child(u_id).setValue(meetingInformation);
                 Toast.makeText(getApplicationContext(), "Requested", Toast.LENGTH_SHORT).show();
                 finish();
