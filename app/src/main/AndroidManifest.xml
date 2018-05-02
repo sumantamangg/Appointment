@@ -41,6 +41,12 @@
         <activity
             android:name=".PopupshowActivity2"
             android:theme="@style/AppTheme.CustomTheme" />
+        <activity
+            android:name=".PopupshowActivity3"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".RequestsHandleActivity" />
+        <activity android:name=".ReqyestHandlePopup"
+            android:theme="@style/AppTheme.CustomTheme"/>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.suman.appointment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,8 @@ public class WeekActivity extends AppCompatActivity {
     private TextView headingfield6;
     private TextView headingfield7;
 
-   // private ArrayList<String> meetinginfo;
+
+    // private ArrayList<String> meetinginfo;
 
 
     Date date;
@@ -75,7 +77,6 @@ public class WeekActivity extends AppCompatActivity {
         headingfield5 =(TextView) findViewById(R.id.heading5);
         headingfield6 =(TextView) findViewById(R.id.heading6);
         headingfield7 =(TextView) findViewById(R.id.heading7);
-
 
 
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -112,6 +113,7 @@ public class WeekActivity extends AppCompatActivity {
         String fd7=firebaseformat.format(c.getTime());
         datefield7.setText(date7);
 
+
         printweekday(fd1,headingfield1,date1);  //call printing function
         printweekday(fd2,headingfield2,date2);  //call printing function
         printweekday(fd3,headingfield3,date3);  //call printing function
@@ -120,6 +122,7 @@ public class WeekActivity extends AppCompatActivity {
         printweekday(fd6,headingfield6,date6);  //call printing function
         printweekday(fd7,headingfield7,date7);  //call printing function
 
+
         //ArrayAdapter<MeetingInformation> arrayAdapter = new ArrayAdapter<MeetingInformation>(this, android.R.layout.simple_list_item_1, meetinginfo );
 
 
@@ -127,9 +130,10 @@ public class WeekActivity extends AppCompatActivity {
     }
     public  void printweekday(final String fd, final TextView hf, final String date){
 
-        databaseReference.child(fd).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 if (!dataSnapshot.exists()) {
                     hf.setText("No Meeting");
                 } else {

@@ -1,5 +1,6 @@
 package com.suman.appointment;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +46,7 @@ public class PopupshowActivity2 extends AppCompatActivity {
         getWindow().setLayout((int) (width * .8), (int) (height * .6));
 
         final String fd = getIntent().getStringExtra("fd");
-        ValueEventListener valueEventListener = databaseReference.child(fd).addValueEventListener(new ValueEventListener() {
+        ValueEventListener valueEventListener = databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -52,51 +55,70 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
                     meetinginfo.add(meetingInformation);
                     keys.add(child.getKey());
-                    //keys.add(child.getKey());
                 }
-                Log.i("thanoss", "checking "+keys.get(0));
-                List<UserInformation> temp = new ArrayList<UserInformation>();
-                for(int j=0; j<keys.size();j++){
-                    UserInformation ui=new UserInformation();
-                    ui= (UserInformation) givemeobj(keys.get(j));
-                    temp.add(ui);
-                }
-                addView(meetinginfo);
-                //Log.i("testetes", "onDataChange: "+meetinginfo.get(0).state);
+                // addView(meetinginfo,givemeobj(keys));
+                givemeobj(meetinginfo, keys);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
     }
 
-    private void addView(List<MeetingInformation> meetinginfo) {
+    private void addView(final List<MeetingInformation> meetinginfo, final List<UserInformation> userinfo) {
 
         for (int i = 0; i < meetinginfo.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.table_view, null);
-            TextView sn, title, party;
-            Log.i("lovelysex", "keys:kfsdf");
+            final TextView sn, title, party;
+
             sn = view.findViewById(R.id.sn);
             title = view.findViewById(R.id.title);
             party = view.findViewById(R.id.party);
-            String value = String.valueOf(i+1);
+            String value = String.valueOf(i + 1);
             sn.setText(value);
+
             title.setText((meetinginfo.get(i).heading));
-            //party.setText(meetinginfo.get(i).agenda);
+            party.setText(userinfo.get(i).name);
             tableAdd.addView(view);
+            final int finalI = i;
+            final int finalI1 = i;
+            party.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getApplicationContext(), userinfo.get(finalI).name, Toast.LENGTH_SHORT).show();
+                    Bundle args = new Bundle();
+                    args.putSerializable("meetinginfo",(Serializable)meetinginfo.get(finalI1));
+                    args.putSerializable("userinfo", (Serializable) userinfo.get(finalI));
+                    Intent intent = new Intent(PopupshowActivity2.this, PopupshowActivity3.class);
+                    intent.putExtra("BUNDLE",args);
+                    startActivity(intent);
 
+                }
+            });
         }
-
     }
-    public UserInformation givemeobj(String key){
-        databaseReference.addValueEventListener(new ValueEventListener() {
+
+    public void givemeobj(final List<MeetingInformation> meetinginfo, final List<String> key) {
+        final List<UserInformation> usss = new ArrayList<UserInformation>();
+        Log.i("jk", "key " + key.get(0));
+
+        Log.i("jkjk", "1234565556662");
+        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInformation userInformation= dataSnapshot.getValue(UserInformation.class);
+                Log.i("jkkk", "1234565556662");
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    for (int i = 0; i < key.size(); i++) {
+                        if (child.getKey().equals(key.get(i))) {
+                            UserInformation userInformation = child.getValue(UserInformation.class);
+                            usss.add(userInformation);
+                        }
+                    }
 
+                }
+                addView(meetinginfo, usss);
             }
 
             @Override
@@ -104,8 +126,11 @@ public class PopupshowActivity2 extends AppCompatActivity {
             }
         });
 
-        return null;
+        Log.i("testetes", "obj: " + usss.size());
+
+
     }
+    //Log.i("testetes", "onDataChange: "+meetinginfo.get(0).state);
 
 
 }

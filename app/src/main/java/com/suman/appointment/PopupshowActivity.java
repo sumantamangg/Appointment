@@ -44,7 +44,7 @@ public class PopupshowActivity extends AppCompatActivity {
         final String fd = getIntent().getStringExtra("fd");
 
 
-        databaseReference.child(fd).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();

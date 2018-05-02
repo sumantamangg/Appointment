@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,9 +30,7 @@ public class PopupActivity extends AppCompatActivity {
     private Button rqbtn;
     FirebaseUser user;
     private  String u_id;
-    private DatabaseReference mdatabase;
-    private ProgressDialog progressDialog;
-    private boolean succ;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class PopupActivity extends AppCompatActivity {
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
         Intent intent = getIntent();
         final String result = intent.getStringExtra("MY_kEY");
-        mdatabase = FirebaseDatabase.getInstance().getReference().child(result);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
         //heading_field and Agenda_Field
@@ -71,8 +70,11 @@ public class PopupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please Enter your agenda", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested","temp");
-                mdatabase.child(u_id).setValue(meetingInformation);
+                MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested");
+                mDatabase.child("requests").child(result).child(u_id).setValue(meetingInformation);
+                Log.i("jkj", "onClick: dhoom "+u_id);
+                Log.i("jkj", "onClick: dhoomf "+result);
+
                 Toast.makeText(getApplicationContext(), "Requested", Toast.LENGTH_SHORT).show();
                 finish();
                 startActivity(new Intent(getApplicationContext(), CalenderActivity.class));

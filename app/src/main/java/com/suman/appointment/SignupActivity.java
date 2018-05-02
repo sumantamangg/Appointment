@@ -85,12 +85,11 @@ public class SignupActivity extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 if(task.isSuccessful()){
                                     FirebaseUser user = auth.getCurrentUser();
-                                    mDatabase.child(user.getUid()).setValue(userinformation);
+                                    mDatabase.child("users").child(user.getUid()).setValue(userinformation);
                                     Toast.makeText(getApplicationContext(), "Signup Successfull", Toast.LENGTH_SHORT).show();
                                     finish();
                                     //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                                     startActivity(new Intent(getApplicationContext(), CalenderActivity.class));
-
 
                                 }
                                 else {

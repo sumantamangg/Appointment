@@ -1,29 +1,26 @@
 package com.suman.appointment;
 
+import java.io.Serializable;
+
 /**
  * Created by Sagar on 4/15/2018.
  */
 
-public class MeetingInformation {
+public class MeetingInformation implements Serializable{
     public String heading;
     public String agenda;
     public String state;
-    public String party;
 
-    public String getParty() {
-        return party;
-    }
 
-    public void setParty(String party) {
-        this.party = party;
-    }
+
+
 
     public MeetingInformation(){}
-    public MeetingInformation(String heading, String agenda, String state, String party) {
+    public MeetingInformation(String heading, String agenda, String state) {
         this.heading = heading;
         this.agenda = agenda;
         this.state = state;
-        this.party = party;
+
 
     }
 

@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser()!=null){
             finish();
-            Intent i = new Intent( MainActivity.this, WeekActivity.class);
+            Intent i = new Intent( MainActivity.this, RequestsHandleActivity.class);
             startActivity(i);
         }
 //        if (auth.getCurrentUser() != null) {
-//            startActivity(new Intent(MainActivity.this, MainActivity.class));
+//            startActivity(new Intent(MainActivity.this, WeekActivity.class));
 //            finish();
 //        }
 
