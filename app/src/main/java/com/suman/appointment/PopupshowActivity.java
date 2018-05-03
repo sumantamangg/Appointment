@@ -23,6 +23,7 @@ public class PopupshowActivity extends AppCompatActivity {
 
     private TextView headingfield;
     private TextView agendafield;
+    private TextView partyfield;
 
 
     @Override
@@ -39,11 +40,12 @@ public class PopupshowActivity extends AppCompatActivity {
 
         headingfield = (TextView) findViewById(R.id.headingText);
         agendafield = (TextView) findViewById(R.id.agendaText);
+        partyfield = (TextView) findViewById(R.id.partyfield);
 
 
         final String fd = getIntent().getStringExtra("fd");
 
-
+        final List<String> keys = new ArrayList<String>();
         databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -51,13 +53,27 @@ public class PopupshowActivity extends AppCompatActivity {
                 for (DataSnapshot child : children) {
                         MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
                         meetinginfo.add(meetingInformation);
+                        keys.add(child.getKey());
                 }
                 for (int i = 0; i < meetinginfo.size(); i++) {
                        if (meetinginfo.get(i).state.equals("accepted")) {
                             //headingfield.setText(meetinginfo.get(i).getClass().toString());
                            headingfield.setText(meetinginfo.get(i).heading);
                             agendafield.setText(meetinginfo.get(i).agenda);
+                            databaseReference.child("users").child(keys.get(i)).child("name").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String name=dataSnapshot.getValue().toString();
+                                    partyfield.setText("-"+name);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                             meetinginfo.clear();
+                            break;
                        }
                     }
                 }
@@ -66,7 +82,6 @@ public class PopupshowActivity extends AppCompatActivity {
 
                 }
             });
-
 
     }
 }

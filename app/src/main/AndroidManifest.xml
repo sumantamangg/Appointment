@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:label="Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,10 +44,14 @@
             android:theme="@style/AppTheme.CustomTheme" />
         <activity
             android:name=".PopupshowActivity3"
-            android:theme="@style/AppTheme.CustomTheme" />
+            android:theme="@style/AppTheme.CustomTheme"
+            android:label="Request"/>
         <activity android:name=".RequestsHandleActivity" />
-        <activity android:name=".ReqyestHandlePopup"
-            android:theme="@style/AppTheme.CustomTheme"/>
+        <activity
+            android:name=".ReqyestHandlePopup"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".PeresonalDetailsActivity"
+            android:label="Peresonal Details"></activity>
     </application>
 
 </manifest>
