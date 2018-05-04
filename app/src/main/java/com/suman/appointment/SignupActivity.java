@@ -56,7 +56,7 @@ public class SignupActivity extends AppCompatActivity {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email= email_field.getText().toString().trim();
+                final String email= email_field.getText().toString().trim();
                 final String name = name_field.getText().toString().trim();
                 final String ph = ph_field.getText().toString().trim();
                 String pass = pass_field.getText().toString().trim();
@@ -76,7 +76,7 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Enter Password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final UserInformation userinformation = new UserInformation(name,ph);
+                //final UserInformation userinformation = new UserInformation(name,ph);
                 progressDialog.setMessage("Signing Up please wait!");
                 progressDialog.show();
                 auth.createUserWithEmailAndPassword(email,pass)
@@ -92,6 +92,7 @@ public class SignupActivity extends AppCompatActivity {
                                     //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                                     Intent intent = new Intent(SignupActivity.this, PeresonalDetailsActivity.class);
                                     intent.putExtra("u_id",user.getUid());
+                                    intent.putExtra("email",email);
                                     intent.putExtra("name",name);
                                     intent.putExtra("phone",ph);
                                     startActivity(intent);

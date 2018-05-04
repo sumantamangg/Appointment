@@ -51,6 +51,7 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
         final String u_id = getIntent().getStringExtra("u_id");
         final String name = getIntent().getStringExtra("name");
         final String ph = getIntent().getStringExtra("phone");
+        final String email = getIntent().getStringExtra("email");
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         sumbitbtn.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +82,7 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
                     }
                 }
                 if(!TextUtils.isEmpty(company)){
-                    final UserInformation userinformation = new UserInformation(address,nationality,company,position,ph,name);
+                    final UserInformation userinformation = new UserInformation(address,nationality,company,position,ph,name,email);
                     progressDialog.setMessage("Submitting Please Wait");
                     progressDialog.show();
                     mDatabase.child("users").child(u_id).setValue(userinformation);

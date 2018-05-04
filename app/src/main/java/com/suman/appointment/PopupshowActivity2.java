@@ -39,11 +39,11 @@ public class PopupshowActivity2 extends AppCompatActivity {
 
         getSupportActionBar().setTitle(getIntent().getStringExtra("date"));
         tableAdd = findViewById(R.id.table_add);
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        getWindow().setLayout((int) (width * .8), (int) (height * .6));
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        int width = dm.widthPixels;
+//        int height = dm.heightPixels;
+//        getWindow().setLayout((int) (width * .8), (int) (height * .6));
 
         final String fd = getIntent().getStringExtra("fd");
         ValueEventListener valueEventListener = databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
@@ -97,8 +97,7 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     intent.putExtra("phone", userinfo.get(finalI).phone);
                     intent.putExtra("fd",fd);
                     meetinginfo.clear();
-                    userinfo.clear();
-                    finish();
+//                    userinfo.clear();
                     startActivity(intent);
 
                 }
