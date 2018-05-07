@@ -133,7 +133,7 @@ public class WeekActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (!dataSnapshot.exists()) {
-                    hf.setText("No Meeting");
+                    hf.setText("   -");
                 } else {
                     Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                     for (DataSnapshot child : children) {
@@ -152,7 +152,7 @@ public class WeekActivity extends AppCompatActivity {
                         }
                     }
                     if (indicate == 0) {
-                        hf.setText("requests pending");
+                        hf.setText("REQUESTS PENDING");
                     }
 
                     //Log.i("testetes", "onDataChange: "+meetinginfo.get(0).agenda);
@@ -167,7 +167,7 @@ public class WeekActivity extends AppCompatActivity {
         hf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hf.getText().equals("No Meeting")) {
+                if (hf.getText().equals("   -")) {
                     Toast.makeText(getApplicationContext(), "No Meeting", Toast.LENGTH_SHORT).show();
                     return;
                 }
