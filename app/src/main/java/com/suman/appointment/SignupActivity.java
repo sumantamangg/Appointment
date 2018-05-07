@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,8 +50,8 @@ public class SignupActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
-        if(auth.getCurrentUser()!=null){
-            Intent i = new Intent( SignupActivity.this, ProfileActivity.class);
+        if (auth.getCurrentUser() != null) {
+            Intent i = new Intent(SignupActivity.this, ProfileActivity.class);
             startActivity(i);
         }
 
@@ -58,27 +59,37 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("jkjj", "after signupactivity: ");
-                final String email= email_field.getText().toString().trim();
+                final String email = email_field.getText().toString().trim();
                 final String name = name_field.getText().toString().trim();
                 final String ph = ph_field.getText().toString().trim();
                 String pass = pass_field.getText().toString().trim();
-                if(TextUtils.isEmpty(name)){
+                if (TextUtils.isEmpty(name)) {
                     Toast.makeText(getApplicationContext(), "Enter your Full name!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(ph)){
+                if (TextUtils.isEmpty(ph)) {
                     Toast.makeText(getApplicationContext(), "Enter phone number!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter Email!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(pass)){
+                if (TextUtils.isEmpty(pass)) {
                     Toast.makeText(getApplicationContext(), "Enter Password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final UserInformation userinformation = new UserInformation(name,ph,email);
+
+                if (pass_field.getText().length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Password should be of 6 length", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!Patterns.EMAIL_ADDRESS.matcher(email_field.getText().toString()).matches()){
+                    Toast.makeText(getApplicationContext(), "Enter valid email address", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                    final UserInformation userinformation = new UserInformation(name, ph, email);
 
 //                Intent intent = new Intent(SignupActivity.this, PeresonalDetailsActivity.class);
 //                                    intent.putExtra("email",email);
@@ -88,27 +99,26 @@ public class SignupActivity extends AppCompatActivity {
 //                                    intent.putExtra("msg","Fill up the following Information to complete your sidnup.");
 //                                    finish();
 //                                    startActivity(intent);
-                auth.createUserWithEmailAndPassword(email,pass)
+                auth.createUserWithEmailAndPassword(email, pass)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 //progressDialog.dismiss();
-                                if(task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     FirebaseUser user = auth.getCurrentUser();
                                     mDatabase.child("users").child(user.getUid()).setValue(userinformation);
                                     Toast.makeText(getApplicationContext(), "Account Created", Toast.LENGTH_SHORT).show();
                                     finish();
                                     //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                                     Intent intent = new Intent(SignupActivity.this, PeresonalDetailsActivity.class);
-                                    intent.putExtra("u_id",user.getUid());
-                                    intent.putExtra("email",email);
-                                    intent.putExtra("name",name);
-                                    intent.putExtra("phone",ph);
-                                    intent.putExtra("msg","Fill up the following Information to complete your sidnup.");
+                                    intent.putExtra("u_id", user.getUid());
+                                    intent.putExtra("email", email);
+                                    intent.putExtra("name", name);
+                                    intent.putExtra("phone", ph);
+                                    intent.putExtra("msg", "Fill up the following Information to complete your sidnup.");
                                     startActivity(intent);
 
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(getApplicationContext(), "Signup Unsuccessfull", Toast.LENGTH_SHORT).show();
                                     return;
 

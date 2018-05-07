@@ -1,5 +1,11 @@
 package com.suman.appointment;
+
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,12 +38,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-     private EditText mEmailField;
-     private EditText mPasswordField;
-     private Button btn_signup;
-     private Button btn_login;
-     private FirebaseAuth auth;
-     private ProgressDialog progressDialog;
+    private EditText mEmailField;
+    private EditText mPasswordField;
+    private Button btn_signup;
+    private Button btn_login;
+    private FirebaseAuth auth;
+    private ProgressDialog progressDialog;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
@@ -54,6 +60,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (!isOnline()) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("Please Connect to internet first");
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                }
+            });
+            dialog.show();
+        }
+
         mEmailField = (EditText) findViewById(R.id.email_field);
         mPasswordField = (EditText) findViewById(R.id.password_field);
         btn_signup = (Button) findViewById(R.id.signup);
@@ -62,23 +82,22 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
-            Log.i("jkkjj", "this is my id: "+auth.getCurrentUser().getUid());
+            Log.i("jkkjj", "this is my id: " + auth.getCurrentUser().getUid());
             databaseReference.child("users").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     final UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
-                    if(userInformation.address==null){
+                    if (userInformation.address == null) {
                         final Intent intent = new Intent(MainActivity.this, PeresonalDetailsActivity.class);
-                        intent.putExtra("name",userInformation.name);
-                        intent.putExtra("phone",userInformation.phone);
-                        intent.putExtra("email",userInformation.email);
-                        intent.putExtra("u_id",auth.getCurrentUser().getUid());
-                        intent.putExtra("msg","You haven't completed your Signup. Please complete it");
+                        intent.putExtra("name", userInformation.name);
+                        intent.putExtra("phone", userInformation.phone);
+                        intent.putExtra("email", userInformation.email);
+                        intent.putExtra("u_id", auth.getCurrentUser().getUid());
+                        intent.putExtra("msg", "You haven't completed your Signup. Please complete it");
                         finish();
                         startActivity(intent);
-                    }
-                    else {
-                        Intent intent=new Intent(MainActivity.this, TempNavActivity.class);
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, TempNavActivity.class);
                         finish();
                         startActivity(intent);
                     }
@@ -96,74 +115,73 @@ public class MainActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email= mEmailField.getText().toString().trim();
+                String email = mEmailField.getText().toString().trim();
                 String pass = mPasswordField.getText().toString().trim();
-                if(TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email Email!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(pass)){
+                if (TextUtils.isEmpty(pass)) {
                     Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
                     return;
-            }
-            progressDialog.setMessage("Logging in please wait!");
-            progressDialog.show();
-            auth.signInWithEmailAndPassword(email, pass)
-                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
-                            if(task.isSuccessful()){
-                                if (auth.getCurrentUser() != null) {
-                                    Log.i("jkkjj", "this is my id: "+auth.getCurrentUser().getUid());
-                                    databaseReference.child("users").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            final UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
-                                            if(userInformation.address==null){
-                                                final Intent intent = new Intent(MainActivity.this, PeresonalDetailsActivity.class);
-                                                intent.putExtra("name",userInformation.name);
-                                                intent.putExtra("phone",userInformation.phone);
-                                                intent.putExtra("email",userInformation.email);
-                                                intent.putExtra("u_id",auth.getCurrentUser().getUid());
-                                                intent.putExtra("msg","You haven't completed your Signup. Please complete it");
-                                                finish();
-                                                startActivity(intent);
+                }
+                progressDialog.setMessage("Logging in please wait!");
+                progressDialog.show();
+                auth.signInWithEmailAndPassword(email, pass)
+                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressDialog.dismiss();
+                                if (task.isSuccessful()) {
+                                    if (auth.getCurrentUser() != null) {
+                                        Log.i("jkkjj", "this is my id: " + auth.getCurrentUser().getUid());
+                                        databaseReference.child("users").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                final UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
+                                                if (userInformation.address == null) {
+                                                    final Intent intent = new Intent(MainActivity.this, PeresonalDetailsActivity.class);
+                                                    intent.putExtra("name", userInformation.name);
+                                                    intent.putExtra("phone", userInformation.phone);
+                                                    intent.putExtra("email", userInformation.email);
+                                                    intent.putExtra("u_id", auth.getCurrentUser().getUid());
+                                                    intent.putExtra("msg", "You haven't completed your Signup. Please complete it");
+                                                    finish();
+                                                    startActivity(intent);
+                                                } else {
+                                                    Intent intent = new Intent(MainActivity.this, TempNavActivity.class);
+                                                    finish();
+                                                    startActivity(intent);
+                                                }
                                             }
-                                            else {
-                                                Intent intent=new Intent(MainActivity.this, TempNavActivity.class);
-                                                finish();
-                                                startActivity(intent);
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
                                             }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                    startActivity(new Intent(MainActivity.this, TempNavActivity.class));
-                                    finish();
-                                }
+                                        });
+                                        startActivity(new Intent(MainActivity.this, TempNavActivity.class));
+                                        finish();
+                                    }
 //                                Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
 //                                finish();
 //                                startActivity(new Intent(getApplicationContext(), TempNavActivity.class));
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), "Unuccessfull", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Unuccessfull", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
 
-                        }
-                    });
+                            }
+                        });
 
-        }});
+            }
+        });
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 auth.signOut();
                 finish();
-                Intent i = new Intent( MainActivity.this, SignupActivity.class);
+                Intent i = new Intent(MainActivity.this, SignupActivity.class);
                 startActivity(i);
             }
         });
@@ -212,6 +230,13 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        }
     }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+}
 

@@ -1,6 +1,11 @@
 package com.suman.appointment;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +20,10 @@ public class TempNavActivity extends AppCompatActivity {
     private Button profilebtn;
     private Button myrequestsbtn;
 
-    private  Button calenderviewbtn;
-    private  Button weekschedulebtn;
-    private  Button settingsbtn;
-    private  Button logoutbtn;
+    private Button calenderviewbtn;
+    private Button weekschedulebtn;
+    private Button settingsbtn;
+    private Button logoutbtn;
 
     private FirebaseAuth auth;
 
@@ -27,6 +32,20 @@ public class TempNavActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temp_nav);
+
+        if (!isOnline()) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("Please Connect to internet first");
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    startActivity(new Intent(TempNavActivity.this, TempNavActivity.class));
+                }
+            });
+            dialog.show();
+        }
 
         requestbtn = (Button) findViewById(R.id.requestbtn);
         profilebtn = (Button) findViewById(R.id.profilebtn);
@@ -88,5 +107,12 @@ public class TempNavActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
