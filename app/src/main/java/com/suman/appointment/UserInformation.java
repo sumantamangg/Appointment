@@ -14,15 +14,30 @@ public class UserInformation implements Serializable {
     public String company;
     public String position;
     public String email;
+    public  String temp;
 
 
-    public UserInformation(String address, String nationality, String company, String position, String ph, String name,String email) {
+    public UserInformation(String address, String nationality, String company, String position) {
+        this.address = address;
+        this.nationality = nationality;
+        this.company = company;
+        this.position = position;
+    }
+
+    public UserInformation(String address, String nationality, String company, String position, String ph, String name, String email) {
         this.address = address;
         this.nationality = nationality;
         this.company = company;
         this.position = position;
         this.phone = ph;
         this.name = name;
+        this.email = email;
+
+    }
+
+    public UserInformation(String name, String phone, String email) {
+        this.name = name;
+        this.phone = phone;
         this.email = email;
     }
 

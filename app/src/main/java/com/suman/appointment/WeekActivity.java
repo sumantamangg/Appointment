@@ -122,11 +122,9 @@ public class WeekActivity extends AppCompatActivity {
         printweekday(fd6,headingfield6,date6);  //call printing function
         printweekday(fd7,headingfield7,date7);  //call printing function
 
-
         //ArrayAdapter<MeetingInformation> arrayAdapter = new ArrayAdapter<MeetingInformation>(this, android.R.layout.simple_list_item_1, meetinginfo );
 
 
-//
     }
     public  void printweekday(final String fd, final TextView hf, final String date){
 

@@ -20,37 +20,51 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 public class ProfileActivity extends AppCompatActivity {
-    private Button btn_logout;
     private FirebaseAuth auth;
     FirebaseUser user;
     String u_id;
     private TextView view_name;
     private TextView view_phone;
     private TextView view_email;
-    private DatabaseReference mDatabase;
+    private TextView companyfield;
+    private TextView positionfield;
+    private TextView addressfield;
+    private TextView nationalityfield;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference databaseReference = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        btn_logout = (Button) findViewById(R.id.logout);
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         u_id=user.getUid();
         view_name = (TextView) findViewById(R.id.name_field);
         view_phone = (TextView) findViewById(R.id.ph_field);
         view_email = (TextView) findViewById(R.id.email_field);
+        companyfield = (TextView) findViewById(R.id.companyf);
+        positionfield = (TextView) findViewById(R.id.postitionf);
+        addressfield = (TextView) findViewById(R.id.addressf);
+        nationalityfield = (TextView) findViewById(R.id.nationalityf);
         String em=user.getEmail();
         view_email.setText("Email: "+em);
         //view_email = user.getEmail().toString();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        databaseReference.child("users").child(u_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String name=dataSnapshot.child(u_id).child("name").getValue(String.class);
-                String ph=dataSnapshot.child(u_id).child("phone").getValue(String.class);
-                view_name.setText("name: "+name);
-                view_phone.setText("phone: "+ph);
+                UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
+                view_email.setText(userInformation.email);
+                view_name.setText(userInformation.name);
+                view_phone.setText(userInformation.phone);
+                addressfield.setText(userInformation.address);
+                nationalityfield.setText(userInformation.nationality);
+                if(userInformation.company.isEmpty()){
+                    companyfield.setText("-");
+                    positionfield.setText("-");
+                }
+                companyfield.setText(userInformation.company);
+                positionfield.setText(userInformation.position);
             }
 
             @Override
@@ -64,15 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(i);
         }
 
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
 
-            public void onClick(View v) {
-                auth.signOut();
-                finish();
-                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-            }
-        });
 
 
 

@@ -55,7 +55,6 @@ public class PopupActivity extends AppCompatActivity {
         final String result = intent.getStringExtra("MY_kEY");
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
         //heading_field and Agenda_Field
         rqbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +71,10 @@ public class PopupActivity extends AppCompatActivity {
                 }
                 MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested");
                 mDatabase.child("requests").child(result).child(u_id).setValue(meetingInformation);
-                Log.i("jkj", "onClick: dhoom "+u_id);
-                Log.i("jkj", "onClick: dhoomf "+result);
-
                 Toast.makeText(getApplicationContext(), "Requested", Toast.LENGTH_SHORT).show();
-                finish();
-                startActivity(new Intent(getApplicationContext(), CalenderActivity.class));
+
+//                Intent intent=new Intent(PopupActivity.this,CalenderActivity.class);
+//                startActivity(intent);
 
             }
         });

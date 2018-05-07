@@ -16,9 +16,9 @@ public class ClientProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_profile);
 
-        namefield = (TextView) findViewById(R.id.namef);
-        emailfield = (TextView) findViewById(R.id.emailf);
-        contactfield = (TextView) findViewById(R.id.contactf);
+        namefield = (TextView) findViewById(R.id.name_field);
+        emailfield = (TextView) findViewById(R.id.email_field);
+        contactfield = (TextView) findViewById(R.id.ph_field);
         companyfield = (TextView) findViewById(R.id.companyf);
         positionfield = (TextView) findViewById(R.id.postitionf);
 

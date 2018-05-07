@@ -74,7 +74,8 @@ public class PopupshowActivity3 extends AppCompatActivity {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("accepted");
                                 Toast.makeText(getApplicationContext(),"Accepted", Toast.LENGTH_SHORT).show();
                                 finish();
-                                break;
+                                Intent intent = new Intent(PopupshowActivity3.this,WeekActivity.class);
+                                startActivity(intent);
                             }
 
                         }
@@ -104,6 +105,8 @@ public class PopupshowActivity3 extends AppCompatActivity {
 
                         }
                         finish();
+                        Intent intent = new Intent(PopupshowActivity3.this,WeekActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override

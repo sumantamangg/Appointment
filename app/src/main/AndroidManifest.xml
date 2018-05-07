@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="Login">
+            android:label="Appointment Booking">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,10 +28,6 @@
             android:label="@string/title_activity_signup"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ProfileActivity" />
-        <activity
-            android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CalenderActivity" />
         <activity
             android:name=".PopupActivity"
@@ -54,7 +50,8 @@
         <activity
             android:name=".PeresonalDetailsActivity"
             android:label="Peresonal Details" />
-        <activity android:name=".ClientProfileActivity"></activity>
+        <activity android:name=".ClientProfileActivity" />
+        <activity android:name=".TempNavActivity"></activity>
     </application>
 
 </manifest>

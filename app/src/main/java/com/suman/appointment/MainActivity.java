@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +19,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
      private Button btn_login;
      private FirebaseAuth auth;
      private ProgressDialog progressDialog;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference();
+    List<UserInformation> userinfo = new ArrayList<>();
+
 
 //    private Button btn_signin,btn_signup;
 //    private DatabaseReference mDatabase;
@@ -51,15 +60,38 @@ public class MainActivity extends AppCompatActivity {
         btn_login = (Button) findViewById(R.id.signin);
         progressDialog = new ProgressDialog(this);
         auth = FirebaseAuth.getInstance();
-        if(auth.getCurrentUser()!=null){
+
+        if (auth.getCurrentUser() != null) {
+            Log.i("jkkjj", "this is my id: "+auth.getCurrentUser().getUid());
+            databaseReference.child("users").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    final UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
+                    if(userInformation.address==null){
+                        final Intent intent = new Intent(MainActivity.this, PeresonalDetailsActivity.class);
+                        intent.putExtra("name",userInformation.name);
+                        intent.putExtra("phone",userInformation.phone);
+                        intent.putExtra("email",userInformation.email);
+                        intent.putExtra("u_id",auth.getCurrentUser().getUid());
+                        intent.putExtra("msg","You haven't completed your Signup. Please complete it");
+                        finish();
+                        startActivity(intent);
+                    }
+                    else {
+                        Intent intent=new Intent(MainActivity.this, TempNavActivity.class);
+                        finish();
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            startActivity(new Intent(MainActivity.this, TempNavActivity.class));
             finish();
-            Intent i = new Intent( MainActivity.this, CalenderActivity.class);
-            startActivity(i);
         }
-//        if (auth.getCurrentUser() != null) {
-//            startActivity(new Intent(MainActivity.this, WeekActivity.class));
-//            finish();
-//        }
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +114,40 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressDialog.dismiss();
                             if(task.isSuccessful()){
-                                Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
-                                finish();
-                                startActivity(new Intent(getApplicationContext(), WeekActivity.class));
+                                if (auth.getCurrentUser() != null) {
+                                    Log.i("jkkjj", "this is my id: "+auth.getCurrentUser().getUid());
+                                    databaseReference.child("users").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            final UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
+                                            if(userInformation.address==null){
+                                                final Intent intent = new Intent(MainActivity.this, PeresonalDetailsActivity.class);
+                                                intent.putExtra("name",userInformation.name);
+                                                intent.putExtra("phone",userInformation.phone);
+                                                intent.putExtra("email",userInformation.email);
+                                                intent.putExtra("u_id",auth.getCurrentUser().getUid());
+                                                intent.putExtra("msg","You haven't completed your Signup. Please complete it");
+                                                finish();
+                                                startActivity(intent);
+                                            }
+                                            else {
+                                                Intent intent=new Intent(MainActivity.this, TempNavActivity.class);
+                                                finish();
+                                                startActivity(intent);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                    startActivity(new Intent(MainActivity.this, TempNavActivity.class));
+                                    finish();
+                                }
+//                                Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
+//                                finish();
+//                                startActivity(new Intent(getApplicationContext(), TempNavActivity.class));
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "Unuccessfull", Toast.LENGTH_SHORT).show();
@@ -98,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                auth.signOut();
                 finish();
                 Intent i = new Intent( MainActivity.this, SignupActivity.class);
                 startActivity(i);

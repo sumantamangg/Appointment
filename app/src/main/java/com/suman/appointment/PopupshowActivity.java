@@ -1,9 +1,11 @@
 package com.suman.appointment;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -82,6 +84,53 @@ public class PopupshowActivity extends AppCompatActivity {
 
                 }
             });
+        partyfield.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                        for (DataSnapshot child : children){
+                            MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
+                            if (meetingInformation.state.equals("accepted")){
+                                String u_id = child.getKey();
+                                databaseReference.child("users").child(u_id).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        UserInformation userInformation  = dataSnapshot.getValue(UserInformation.class);
+                                        Intent intent = new Intent(PopupshowActivity.this, ClientProfileActivity.class);
+                                        intent.putExtra("name",userInformation.name);
+                                        intent.putExtra("phone",userInformation.phone);
+                                        intent.putExtra("email",userInformation.email);
+                                        if(userInformation.company.isEmpty()){
+                                            intent.putExtra("company","-");
+                                            intent.putExtra("position", "-");
+                                        }
+                                        else {
+
+                                            intent.putExtra("company",userInformation.company);
+                                            intent.putExtra("position",userInformation.position);
+                                        }
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
 
     }
 }

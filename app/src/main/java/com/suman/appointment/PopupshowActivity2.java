@@ -27,8 +27,8 @@ public class PopupshowActivity2 extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     final List<MeetingInformation> meetinginfo = new ArrayList<MeetingInformation>();
-    List<UserInformation> userinfo = new ArrayList<>();
-    List<String> keys = new ArrayList<String>();
+    final List<UserInformation> userinfo = new ArrayList<>();
+    final List<String> keys = new ArrayList<String>();
     LinearLayout tableAdd;
 
     @Override
@@ -96,7 +96,7 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     intent.putExtra("agenda",meetinginfo.get(finalI).agenda);
                     intent.putExtra("phone", userinfo.get(finalI).phone);
                     intent.putExtra("fd",fd);
-                    meetinginfo.clear();
+                    //meetinginfo.clear();
 //                    userinfo.clear();
                     startActivity(intent);
 
