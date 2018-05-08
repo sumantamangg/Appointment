@@ -171,7 +171,7 @@ public class WeekActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "No Meeting", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if(hf.getText().equals("requests pending")){
+                else if(hf.getText().equals("REQUESTS PENDING")){
                     Intent i = new Intent(WeekActivity.this, PopupshowActivity2.class);
                     i.putExtra("fd",fd);
                     i.putExtra("hf", hf.getText());
@@ -188,6 +188,12 @@ public class WeekActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public void  onBackPressed(){
+        super.onBackPressed();
+        startActivity(new Intent(WeekActivity.this,TempNavActivity.class));
+        finish();
     }
 
 }

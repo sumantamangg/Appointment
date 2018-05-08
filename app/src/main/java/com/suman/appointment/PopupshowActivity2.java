@@ -96,6 +96,7 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     intent.putExtra("agenda",meetinginfo.get(finalI).agenda);
                     intent.putExtra("phone", userinfo.get(finalI).phone);
                     intent.putExtra("fd",fd);
+                    intent.putExtra("backbtn",getIntent().getStringExtra("backbtn"));
                     //meetinginfo.clear();
 //                    userinfo.clear();
                     startActivity(intent);
@@ -135,7 +136,6 @@ public class PopupshowActivity2 extends AppCompatActivity {
 
 
     }
-    //Log.i("testetes", "onDataChange: "+meetinginfo.get(0).state);
 
 
 }

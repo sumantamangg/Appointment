@@ -97,6 +97,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
                                         Intent intent = new Intent(RequestsHandleActivity.this, PopupshowActivity2.class);
                                         intent.putExtra("fd",d1);
                                         intent.putExtra("date", date+" (Pending Requests)");
+                                        intent.putExtra("backbtn","rqst");
                                         startActivity(intent);
                                         meetinginfo.clear();
                                     }
@@ -128,5 +129,11 @@ public class RequestsHandleActivity extends AppCompatActivity {
 
         });
 
+    }
+    @Override
+    public void  onBackPressed(){
+        super.onBackPressed();
+        startActivity(new Intent(RequestsHandleActivity.this,TempNavActivity.class));
+        finish();
     }
 }

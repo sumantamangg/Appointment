@@ -133,9 +133,23 @@ public class CalenderActivity extends AppCompatActivity {
 
             }
         });
+//        @Override
+//        public void onBackPressed()
+//        {
+//            super.onBackPressed();
+//            startActivity(new Intent(ThisActivity.this, NextActivity.class));
+//            finish();
+//
+//        }
 
 
 
 
+    }
+    @Override
+    public void  onBackPressed(){
+        super.onBackPressed();
+        startActivity(new Intent(CalenderActivity.this,TempNavActivity.class));
+        finish();
     }
 }

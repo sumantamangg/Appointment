@@ -72,12 +72,17 @@ public class PopupshowActivity3 extends AppCompatActivity {
                             MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
                             if(meetingInformation.agenda.equals(agenda)&& meetingInformation.heading.equals(heading)) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("accepted");
-                                Toast.makeText(getApplicationContext(),"Accepted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
                                 finish();
-                                Intent intent = new Intent(PopupshowActivity3.this,WeekActivity.class);
-                                startActivity(intent);
+                                if (getIntent().getStringExtra("backbtn").equals("rqst")) {
+                                    Intent intent = new Intent(PopupshowActivity3.this, RequestsHandleActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Intent intent = new Intent(PopupshowActivity3.this, WeekActivity.class);
+                                    startActivity(intent);
+                                }
                             }
-
                         }
                     }
 
@@ -88,6 +93,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 });
             }
         });
+        /*
         rejectbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,8 +111,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
 
                         }
                         finish();
-                        Intent intent = new Intent(PopupshowActivity3.this,WeekActivity.class);
-                        startActivity(intent);
+
                     }
 
                     @Override
@@ -116,6 +121,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 });
             }
         });
+        */
         partyfield.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
