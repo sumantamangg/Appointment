@@ -98,9 +98,8 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     intent.putExtra("fd",fd);
                     intent.putExtra("backbtn",getIntent().getStringExtra("backbtn"));
                     //meetinginfo.clear();
-//                    userinfo.clear();
+                    //userinfo.clear();
                     startActivity(intent);
-
                 }
             });
         }

@@ -1,6 +1,7 @@
 package com.suman.appointment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -41,8 +42,11 @@ public class PopupshowActivity extends AppCompatActivity {
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
         headingfield = (TextView) findViewById(R.id.headingText);
+        headingfield.setTextColor(Color.BLUE);
         agendafield = (TextView) findViewById(R.id.agendaText);
+        agendafield.setTextColor(Color.BLUE);
         partyfield = (TextView) findViewById(R.id.partyfield);
+        partyfield.setTextColor(Color.RED);
 
 
         final String fd = getIntent().getStringExtra("fd");

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light"
     android:fillViewport="true">
 
     <android.support.constraint.ConstraintLayout
@@ -235,7 +236,7 @@
                     android:clickable="true"
                     android:gravity="center"
 
-                    android:textSize="20sp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </TableRow>
 
         </TableLayout>

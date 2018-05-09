@@ -52,7 +52,8 @@
             android:name=".PeresonalDetailsActivity"
             android:label="Peresonal Details" />
         <activity android:name=".ClientProfileActivity" />
-        <activity android:name=".TempNavActivity"></activity>
+        <activity android:name=".TempNavActivity" />
+        <activity android:name=".MyRequestsActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.suman.appointment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -58,8 +59,11 @@ public class PopupshowActivity3 extends AppCompatActivity {
         rejectbtn = (Button) findViewById(R.id.rejectbtn);
 
         headingfield.setText(heading);
+        headingfield.setTextColor(Color.BLUE);
         agendafield.setText(agenda);
+        agendafield.setTextColor(Color.BLUE);
         partyfield.setText("-"+party);
+        partyfield.setTextColor(Color.RED);
 
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +77,14 @@ public class PopupshowActivity3 extends AppCompatActivity {
                             if(meetingInformation.agenda.equals(agenda)&& meetingInformation.heading.equals(heading)) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("accepted");
                                 Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
-                                finish();
                                 if (getIntent().getStringExtra("backbtn").equals("rqst")) {
                                     Intent intent = new Intent(PopupshowActivity3.this, RequestsHandleActivity.class);
+                                    finish();
                                     startActivity(intent);
                                 }
                                 else {
                                     Intent intent = new Intent(PopupshowActivity3.this, WeekActivity.class);
+                                    finish();
                                     startActivity(intent);
                                 }
                             }
@@ -171,7 +176,6 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 });
             }
         });
-
 
     }
 }

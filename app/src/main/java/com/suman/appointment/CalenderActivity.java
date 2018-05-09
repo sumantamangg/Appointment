@@ -107,7 +107,6 @@ public class CalenderActivity extends AppCompatActivity {
                                 for (int i=0; i<meetinginfo.size();i++){
                                     if(meetinginfo.get(i).state.equals("accepted")){
                                         Toast.makeText(getApplicationContext(), "Sorry! The date is not availabe. Try Another one.", Toast.LENGTH_SHORT).show();
-
                                         meetinginfo.clear();
                                         break;
                                     }
