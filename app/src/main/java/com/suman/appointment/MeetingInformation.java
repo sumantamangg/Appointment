@@ -10,17 +10,18 @@ public class MeetingInformation implements Serializable{
     public String heading;
     public String agenda;
     public String state;
+    public String date;
 
 
 
 
 
     public MeetingInformation(){}
-    public MeetingInformation(String heading, String agenda, String state) {
+    public MeetingInformation(String heading, String agenda, String state,String date) {
         this.heading = heading;
         this.agenda = agenda;
         this.state = state;
-
+        this.date = date;
 
     }
 

@@ -72,8 +72,7 @@ public class TempNavActivity extends AppCompatActivity {
         myrequestsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //yet to be made
-                Toast.makeText(getApplicationContext(), "Work in Progress", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MyRequestsActivity.class));
 
             }
         });

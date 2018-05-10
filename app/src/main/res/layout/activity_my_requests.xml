@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyRequestsActivity">
+    tools:context=".MyRequestsActivity"
+    android:background="@android:color/holo_blue_light">
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -59,7 +60,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/table_add"
+                android:id="@+id/table_add2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear"

@@ -53,7 +53,9 @@
             android:label="Peresonal Details" />
         <activity android:name=".ClientProfileActivity" />
         <activity android:name=".TempNavActivity" />
-        <activity android:name=".MyRequestsActivity"></activity>
+        <activity android:name=".MyRequestsActivity" />
+        <activity android:name=".MyRequestsOptionActivity"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
     </application>
 
 </manifest>

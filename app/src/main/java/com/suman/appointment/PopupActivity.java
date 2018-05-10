@@ -71,7 +71,7 @@ public class PopupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please Enter your agenda", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested");
+                MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested",getIntent().getStringExtra("date"));
                 mDatabase.child("requests").child(result).child(u_id).setValue(meetingInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
