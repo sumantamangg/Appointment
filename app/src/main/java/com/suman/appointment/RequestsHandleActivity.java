@@ -133,7 +133,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
     @Override
     public void  onBackPressed(){
         super.onBackPressed();
-        startActivity(new Intent(RequestsHandleActivity.this,TempNavActivity.class));
+        startActivity(new Intent(RequestsHandleActivity.this,AdminHomeActivity.class));
         finish();
     }
 }

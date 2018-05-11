@@ -198,7 +198,7 @@ public class WeekActivity extends AppCompatActivity {
     @Override
     public void  onBackPressed(){
         super.onBackPressed();
-        startActivity(new Intent(WeekActivity.this,TempNavActivity.class));
+        startActivity(new Intent(WeekActivity.this,AdminHomeActivity.class));
         finish();
     }
 

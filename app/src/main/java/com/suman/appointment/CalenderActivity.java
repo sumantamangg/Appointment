@@ -148,7 +148,7 @@ public class CalenderActivity extends AppCompatActivity {
     @Override
     public void  onBackPressed(){
         super.onBackPressed();
-        startActivity(new Intent(CalenderActivity.this,TempNavActivity.class));
+        startActivity(new Intent(CalenderActivity.this,ClientHomeScreenActivity.class));
         finish();
     }
 }

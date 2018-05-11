@@ -20,42 +20,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class TempNavActivity extends AppCompatActivity {
-
-    private Button requestbtn;
-    private Button profilebtn;
-    private Button myrequestsbtn;
+public class AdminHomeActivity extends AppCompatActivity {
 
     private Button calenderviewbtn;
     private Button weekschedulebtn;
     private Button settingsbtn;
     private Button logoutbtn;
-
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference();
-    private FirebaseAuth auth;
-
-
+    FirebaseDatabase database=FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference=database.getReference();
+    FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_temp_nav);
+        setContentView(R.layout.activity_admin_home);
         auth = FirebaseAuth.getInstance();
 
+        calenderviewbtn = (Button) findViewById(R.id.calenderviewbtn);
+        weekschedulebtn = (Button) findViewById(R.id.weekschedulebtn);
+        settingsbtn = (Button) findViewById(R.id.settingsbtn);
+        logoutbtn = (Button) findViewById(R.id.logoutbtn);
 
-        if (!isOnline()) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setMessage("Please Connect to internet first");
-            dialog.setCancelable(false);
-            dialog.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    startActivity(new Intent(TempNavActivity.this, TempNavActivity.class));
-                }
-            });
-            dialog.show();
-        }
+
         if (auth.getCurrentUser() != null) {
             Log.i("jkkjj", "this is my id: " + auth.getCurrentUser().getUid());
             databaseReference.child("users").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
@@ -63,7 +48,7 @@ public class TempNavActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     final UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
                     if (userInformation.address == null) {
-                        final Intent intent = new Intent(TempNavActivity.this, PeresonalDetailsActivity.class);
+                        final Intent intent = new Intent(AdminHomeActivity.this, PeresonalDetailsActivity.class);
                         intent.putExtra("name", userInformation.name);
                         intent.putExtra("phone", userInformation.phone);
                         intent.putExtra("email", userInformation.email);
@@ -72,10 +57,6 @@ public class TempNavActivity extends AppCompatActivity {
                         finish();
                         startActivity(intent);
                     }
-                    else if(!auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")){
-                        startActivity(new Intent(TempNavActivity.this, ClientHomeScreenActivity.class));
-                    }
-
                 }
 
                 @Override
@@ -85,34 +66,6 @@ public class TempNavActivity extends AppCompatActivity {
             });
 
         }
-        requestbtn = (Button) findViewById(R.id.requestbtn);
-        profilebtn = (Button) findViewById(R.id.profilebtn);
-        myrequestsbtn = (Button) findViewById(R.id.myrequestsbtn);
-        calenderviewbtn = (Button) findViewById(R.id.calenderviewbtn);
-        weekschedulebtn = (Button) findViewById(R.id.weekschedulebtn);
-        settingsbtn = (Button) findViewById(R.id.settingsbtn);
-        logoutbtn = (Button) findViewById(R.id.logoutbtn);
-
-        requestbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), CalenderActivity.class));
-            }
-        });
-        profilebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-
-            }
-        });
-        myrequestsbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MyRequestsActivity.class));
-
-            }
-        });
         calenderviewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,12 +92,11 @@ public class TempNavActivity extends AppCompatActivity {
             public void onClick(View view) {
                 auth.signOut();
                 finish();
-                startActivity(new Intent(TempNavActivity.this, MainActivity.class));
+                startActivity(new Intent(AdminHomeActivity.this, MainActivity.class));
             }
         });
 
     }
-
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

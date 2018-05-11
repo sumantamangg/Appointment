@@ -54,8 +54,11 @@
         <activity android:name=".ClientProfileActivity" />
         <activity android:name=".TempNavActivity" />
         <activity android:name=".MyRequestsActivity" />
-        <activity android:name=".MyRequestsOptionActivity"
-            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity
+            android:name=".MyRequestsOptionActivity"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".ClientHomeScreenActivity" />
+        <activity android:name=".AdminHomeActivity"></activity>
     </application>
 
 </manifest>

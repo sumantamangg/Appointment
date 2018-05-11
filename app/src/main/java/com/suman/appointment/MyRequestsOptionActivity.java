@@ -29,7 +29,7 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_requests_option);
-        getSupportActionBar().setTitle(getIntent().getStringExtra("date"));
+        getSupportActionBar().setTitle(getIntent().getStringExtra("date")+" ("+getIntent().getStringExtra("state")+")");
         auth=FirebaseAuth.getInstance();
 
         DisplayMetrics dm = new DisplayMetrics();

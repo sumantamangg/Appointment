@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             });
             dialog.show();
         }
-
         mEmailField = (EditText) findViewById(R.id.email_field);
         mPasswordField = (EditText) findViewById(R.id.password_field);
         btn_signup = (Button) findViewById(R.id.signup);
@@ -96,10 +95,15 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("msg", "You haven't completed your Signup. Please complete it");
                         finish();
                         startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, TempNavActivity.class);
+                    }
+                    else {
+                        if(!auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")){
+                            startActivity(new Intent(MainActivity.this, ClientHomeScreenActivity.class));
+                        }
+                        Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
                         finish();
                         startActivity(intent);
+
                     }
                 }
 
@@ -148,10 +152,14 @@ public class MainActivity extends AppCompatActivity {
                                                     intent.putExtra("msg", "You haven't completed your Signup. Please complete it");
                                                     finish();
                                                     startActivity(intent);
-                                                } else {
-                                                    Intent intent = new Intent(MainActivity.this, TempNavActivity.class);
+                                                } else if(auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")){
+
+                                                    Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
                                                     finish();
                                                     startActivity(intent);
+                                                } else{
+                                                    finish();
+                                                    startActivity(new Intent(MainActivity.this, ClientHomeScreenActivity.class));
                                                 }
                                             }
 
