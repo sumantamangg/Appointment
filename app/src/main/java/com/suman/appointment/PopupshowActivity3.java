@@ -37,6 +37,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popupshow3);
 
+        getSupportActionBar().setTitle(getIntent().getStringExtra("state"));
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;

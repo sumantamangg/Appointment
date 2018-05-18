@@ -33,6 +33,8 @@ public class PopupActivity extends AppCompatActivity {
     FirebaseUser user;
     private  String u_id;
     private DatabaseReference mDatabase;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference databaseReference = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +73,18 @@ public class PopupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please Enter your agenda", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 MeetingInformation meetingInformation = new MeetingInformation(heading,agenda,"requested",getIntent().getStringExtra("date"));
                 mDatabase.child("requests").child(result).child(u_id).setValue(meetingInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Requested", Toast.LENGTH_SHORT).show();
+
+                            NotificationData notificationData=new NotificationData(u_id,"request");
+
+                            databaseReference.child("notifications").child("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1").push().setValue(notificationData);
+
                             Intent intent = new Intent(PopupActivity.this, CalenderActivity.class);
                             finish();
                             startActivity(intent);

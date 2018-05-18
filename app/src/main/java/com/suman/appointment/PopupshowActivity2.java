@@ -37,7 +37,7 @@ public class PopupshowActivity2 extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_popupshow2);
 
-        getSupportActionBar().setTitle(getIntent().getStringExtra("date"));
+       getSupportActionBar().setTitle(getIntent().getStringExtra("date"));
         tableAdd = findViewById(R.id.table_add);
 //        DisplayMetrics dm = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -96,6 +96,7 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     intent.putExtra("agenda",meetinginfo.get(finalI).agenda);
                     intent.putExtra("phone", userinfo.get(finalI).phone);
                     intent.putExtra("fd",fd);
+                    intent.putExtra("state",meetinginfo.get(finalI).state);
                     intent.putExtra("backbtn",getIntent().getStringExtra("backbtn"));
                     //meetinginfo.clear();
                     //userinfo.clear();

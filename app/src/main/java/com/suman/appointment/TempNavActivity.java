@@ -131,7 +131,7 @@ public class TempNavActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "You are on Beta Testing!!", Toast.LENGTH_SHORT).show();
-
+                //startActivity(new Intent(TempNavActivity.this, SettingsActivity.class));
             }
         });
         logoutbtn.setOnClickListener(new View.OnClickListener() {

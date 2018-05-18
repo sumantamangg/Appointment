@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.content.Intent;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,13 +155,29 @@ public class MainActivity extends AppCompatActivity {
                                                     finish();
                                                     startActivity(intent);
                                                 } else if(auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")){
+                                                    String userId = auth.getCurrentUser().getUid();
+                                                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                                    databaseReference.child("users").child(userId).child("deviceToken").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
+                                                            finish();
+                                                            startActivity(intent);
+                                                        }
+                                                    });
 
-                                                    Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
-                                                    finish();
-                                                    startActivity(intent);
                                                 } else{
-                                                    finish();
-                                                    startActivity(new Intent(MainActivity.this, ClientHomeScreenActivity.class));
+                                                    String userId = auth.getCurrentUser().getUid();
+                                                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                                    databaseReference.child("users").child(userId).child("deviceToken").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+
+                                                            finish();
+                                                            startActivity(new Intent(MainActivity.this, ClientHomeScreenActivity.class));
+                                                        }
+                                                    });
+
                                                 }
                                             }
 

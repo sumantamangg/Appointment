@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +29,7 @@ public class PopupshowActivity extends AppCompatActivity {
     private TextView headingfield;
     private TextView agendafield;
     private TextView partyfield;
+    private Button rejectbtn;
 
 
     @Override
@@ -47,9 +50,11 @@ public class PopupshowActivity extends AppCompatActivity {
         agendafield.setTextColor(Color.BLUE);
         partyfield = (TextView) findViewById(R.id.partyfield);
         partyfield.setTextColor(Color.RED);
+        rejectbtn = (Button) findViewById(R.id.popuprj);
 
 
         final String fd = getIntent().getStringExtra("fd");
+        final String hd = getIntent().getStringExtra("hf");
 
         final List<String> keys = new ArrayList<String>();
         databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
@@ -124,6 +129,53 @@ public class PopupshowActivity extends AppCompatActivity {
 
                                     }
                                 });
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+        /* yet to be made */
+        rejectbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                DatabaseReference dbrf = databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+//                        for (DataSnapshot child : children) {
+//                            if (child.child("heading").equals(hd)) {
+//                                String key = child.getKey();
+//
+//
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+
+                databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                        for (DataSnapshot child : children) {
+                            MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
+
+                            if(meetingInformation.heading.equals(hd)) {
+                                databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("rejected");
+                                Toast.makeText(getApplicationContext(), "Rejected", Toast.LENGTH_SHORT).show();
+                                finish();
+                                startActivity(new Intent(PopupshowActivity.this, WeekActivity.class));
                             }
                         }
                     }
