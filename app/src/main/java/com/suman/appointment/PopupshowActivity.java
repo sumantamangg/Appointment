@@ -173,6 +173,7 @@ public class PopupshowActivity extends AppCompatActivity {
 
                             if(meetingInformation.heading.equals(hd)) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("rejected");
+                                databaseReference.child("notifications").child(child.getKey()).child("uqid").setValue("rejected");
                                 Toast.makeText(getApplicationContext(), "Rejected", Toast.LENGTH_SHORT).show();
                                 finish();
                                 startActivity(new Intent(PopupshowActivity.this, WeekActivity.class));

@@ -33,7 +33,6 @@
         <activity
             android:name=".PopupActivity"
             android:theme="@style/AppTheme.CustomTheme" />
-        <activity android:name=".WeekActivity" />
         <activity
             android:name=".PopupshowActivity"
             android:theme="@style/AppTheme.CustomTheme" />
@@ -59,10 +58,25 @@
             android:theme="@style/AppTheme.CustomTheme" />
         <activity android:name=".ClientHomeScreenActivity" />
         <activity android:name=".AdminHomeActivity" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".WeekActivity">
 
+        </activity>
 
+        <service android:name=".FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".RequestNotificationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.NotificationTo" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
-
 
 </manifest>

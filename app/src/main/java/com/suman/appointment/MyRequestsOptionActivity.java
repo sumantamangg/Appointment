@@ -57,6 +57,25 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 databaseReference.child("requests").child(getIntent().getStringExtra("root")).child(auth.getCurrentUser().getUid())
                         .removeValue();
+                databaseReference.child("notifications").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                        for(DataSnapshot child:children){
+                            NotificationData notificationData = child.getValue(NotificationData.class);
+
+                            if(notificationData.uqid.equals(getIntent().getStringExtra("root"))){
+                                databaseReference.child("notifications").child(child.getKey()).removeValue();
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 Toast.makeText(getApplicationContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
                 finish();
                 startActivity(new Intent(MyRequestsOptionActivity.this,TempNavActivity.class));

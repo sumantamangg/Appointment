@@ -81,9 +81,9 @@ public class PopupActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Requested", Toast.LENGTH_SHORT).show();
 
-                            NotificationData notificationData=new NotificationData(u_id,"request");
+                            NotificationData notificationData=new NotificationData(u_id,"request",result);
 
-                            databaseReference.child("notifications").child("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1").push().setValue(notificationData);
+                            databaseReference.child("notifications").push().setValue(notificationData);
 
                             Intent intent = new Intent(PopupActivity.this, CalenderActivity.class);
                             finish();
