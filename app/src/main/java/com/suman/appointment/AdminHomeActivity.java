@@ -26,9 +26,10 @@ public class AdminHomeActivity extends AppCompatActivity {
     private Button weekschedulebtn;
     private Button settingsbtn;
     private Button logoutbtn;
-    FirebaseDatabase database=FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference=database.getReference();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference();
     FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,17 +98,21 @@ public class AdminHomeActivity extends AppCompatActivity {
         });
 
     }
+
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
     @Override
-    public void  onBackPressed(){
+    public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
+
     }
 }

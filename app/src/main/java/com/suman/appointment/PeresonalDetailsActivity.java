@@ -73,48 +73,47 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
                 final String nationality = nationalityfield.getText().toString().trim();
                 final String company = companyfield.getText().toString().trim();
                 final String position = positionfield.getText().toString().trim();
-                if(TextUtils.isEmpty(address)){
+                if (TextUtils.isEmpty(address)) {
                     Toast.makeText(getApplicationContext(), "Adress is missing.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(nationality)){
+                if (TextUtils.isEmpty(nationality)) {
                     Toast.makeText(getApplicationContext(), "Nationality is missing.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!TextUtils.isEmpty(company)){
-                    if(TextUtils.isEmpty(position)){
+                if (!TextUtils.isEmpty(company)) {
+                    if (TextUtils.isEmpty(position)) {
                         Toast.makeText(getApplicationContext(), "Position is missing", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
-                if(!TextUtils.isEmpty(position)){
-                    if(TextUtils.isEmpty(company)){
+                if (!TextUtils.isEmpty(position)) {
+                    if (TextUtils.isEmpty(company)) {
                         Toast.makeText(getApplicationContext(), "Company is missing", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
-                if(!TextUtils.isEmpty(company)){
-                    UserInformation userInformation = new UserInformation( address, nationality, company, position, ph, name, email);
-                   databaseReference.child("users").child(u_id).setValue(userInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
-                       @Override
-                       public void onComplete(@NonNull Task<Void> task) {
-                           if(task.isSuccessful()){
-                               String deviceToken = FirebaseInstanceId.getInstance().getToken();
-                               databaseReference.child("users").child(u_id).child("deviceToken").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                   @Override
-                                   public void onSuccess(Void aVoid) {
-                                       Toast.makeText(getApplicationContext(), "signup completed", Toast.LENGTH_SHORT).show();
-                                       Intent intent = new Intent(PeresonalDetailsActivity.this, TempNavActivity.class);
-                                       startActivity(intent);
-                                   }
-                               });
-                           }
-                           else {
-                               Toast.makeText(getApplicationContext(), "signup failed", Toast.LENGTH_SHORT).show();
+                if (!TextUtils.isEmpty(company)) {
+                    UserInformation userInformation = new UserInformation(address, nationality, company, position, ph, name, email);
+                    databaseReference.child("users").child(u_id).setValue(userInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                databaseReference.child("users").child(u_id).child("deviceToken").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getApplicationContext(), "signup completed", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(PeresonalDetailsActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getApplicationContext(), "signup failed", Toast.LENGTH_SHORT).show();
                                 return;
-                           }
-                       }
-                   });
+                            }
+                        }
+                    });
 
                 }
             }
