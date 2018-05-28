@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_login;
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;
+    private MyPreferences appPreference;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
@@ -61,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        appPreference = new MyPreferences(this);
         if (!isOnline()) {
+
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setMessage("Please Connect to internet first");
             dialog.setCancelable(false);
@@ -97,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("msg", "You haven't completed your Signup. Please complete it");
                         finish();
                         startActivity(intent);
-                    }
-                    else {
-                        if(!auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")){
+                    } else {
+                        if (!auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")) {
                             startActivity(new Intent(MainActivity.this, ClientHomeScreenActivity.class));
+                            return;
                         }
                         Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
                         finish();
@@ -114,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-            startActivity(new Intent(MainActivity.this, TempNavActivity.class));
-            finish();
+
         }
 
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                                                     intent.putExtra("msg", "You haven't completed your Signup. Please complete it");
                                                     finish();
                                                     startActivity(intent);
-                                                } else if(auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")){
+                                                } else if (auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")) {
                                                     String userId = auth.getCurrentUser().getUid();
                                                     String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                                     databaseReference.child("users").child(userId).child("deviceToken").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                                                         }
                                                     });
 
-                                                } else{
+                                                } else {
                                                     String userId = auth.getCurrentUser().getUid();
                                                     String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                                     databaseReference.child("users").child(userId).child("deviceToken").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -186,8 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
                                             }
                                         });
-                                        startActivity(new Intent(MainActivity.this, TempNavActivity.class));
-                                        finish();
+
                                     }
 //                                Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
 //                                finish();

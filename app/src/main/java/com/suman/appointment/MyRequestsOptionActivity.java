@@ -22,15 +22,16 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
     private TextView headingfield;
     private TextView agendafield;
     private Button cancelbtn;
-    FirebaseDatabase database=FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference=database.getReference();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference();
     private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_requests_option);
-        getSupportActionBar().setTitle(getIntent().getStringExtra("date")+" ("+getIntent().getStringExtra("state")+")");
-        auth=FirebaseAuth.getInstance();
+        getSupportActionBar().setTitle(getIntent().getStringExtra("date") + " (" + getIntent().getStringExtra("state") + ")");
+        auth = FirebaseAuth.getInstance();
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -61,12 +62,13 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                        for(DataSnapshot child:children){
+                        for (DataSnapshot child : children) {
                             NotificationData notificationData = child.getValue(NotificationData.class);
-
-                            if(notificationData.uqid.equals(getIntent().getStringExtra("root"))){
-                                databaseReference.child("notifications").child(child.getKey()).removeValue();
-                                break;
+                            if (notificationData.uqid!=null && getIntent().getStringExtra("root") != null) {
+                                if (notificationData.uqid.equals(getIntent().getStringExtra("root"))) {
+                                    databaseReference.child("notifications").child(child.getKey()).removeValue();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -78,7 +80,7 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
                 });
                 Toast.makeText(getApplicationContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
                 finish();
-                startActivity(new Intent(MyRequestsOptionActivity.this,TempNavActivity.class));
+                startActivity(new Intent(MyRequestsOptionActivity.this, ClientHomeScreenActivity.class));
 
             }
 
