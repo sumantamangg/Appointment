@@ -57,8 +57,8 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 databaseReference.child("requests").child(getIntent().getStringExtra("root")).child(auth.getCurrentUser().getUid())
-                        .removeValue();
-                databaseReference.child("notifications").addValueEventListener(new ValueEventListener() {
+                        .child("state").setValue("cancelled");
+                databaseReference.child("notifications").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();

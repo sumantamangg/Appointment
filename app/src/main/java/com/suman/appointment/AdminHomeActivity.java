@@ -92,8 +92,8 @@ public class AdminHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 auth.signOut();
-                finish();
                 startActivity(new Intent(AdminHomeActivity.this, MainActivity.class));
+                finish();
             }
         });
 
@@ -112,7 +112,6 @@ public class AdminHomeActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
 
     }
 }

@@ -73,7 +73,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    databaseReference.child("requests").child(d1).addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("requests").child(d1).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {

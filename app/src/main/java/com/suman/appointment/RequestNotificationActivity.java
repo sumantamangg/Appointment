@@ -56,17 +56,38 @@ public class RequestNotificationActivity extends AppCompatActivity {
         reqdate.setText(getIntent().getStringExtra("reqdate"));
         reqdate.setTextColor(Color.BLUE);
 
+        if (getIntent().getStringExtra("noti_type").equals("cancelledType")) {
+            acceptbtn.setVisibility(View.INVISIBLE);
+            rejectbtn.setVisibility(View.INVISIBLE);
+        } else if (getIntent().getStringExtra("noti_type").equals("acceptedType")) {
+            acceptbtn.setVisibility(View.INVISIBLE);
+            rejectbtn.setVisibility(View.INVISIBLE);
+            partyfield.setVisibility(View.GONE);
+        }
+
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("jkjjjj", "onClick: "+getIntent().getStringExtra("from_user_id"));
-                Log.i("jkjjjj", "onClick: "+getIntent().getStringExtra("fd"));
                 databaseReference.child("requests").child(getIntent().getStringExtra("fd")).child(getIntent().getStringExtra("from_user_id")).child("state").setValue("accepted");
                 Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
                 finish();
                 startActivity(new Intent(RequestNotificationActivity.this, AdminHomeActivity.class));
             }
         });
+        rejectbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.child("requests").child(getIntent().getStringExtra("fd")).child(getIntent().getStringExtra("from_user_id")).child("state").setValue("ignored");
+                Toast.makeText(getApplicationContext(), "cancelled", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(new Intent(RequestNotificationActivity.this, AdminHomeActivity.class));
+            }
+        });
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(RequestNotificationActivity.this,MainActivity.class));
 
     }
 }

@@ -57,7 +57,7 @@ public class PopupshowActivity extends AppCompatActivity {
         final String hd = getIntent().getStringExtra("hf");
 
         final List<String> keys = new ArrayList<String>();
-        databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -96,7 +96,7 @@ public class PopupshowActivity extends AppCompatActivity {
         partyfield.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -145,35 +145,39 @@ public class PopupshowActivity extends AppCompatActivity {
         rejectbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                DatabaseReference dbrf = databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-//                        for (DataSnapshot child : children) {
-//                            if (child.child("heading").equals(hd)) {
-//                                String key = child.getKey();
-//
-//
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-
-                databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                         for (DataSnapshot child : children) {
                             MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
 
-                            if(meetingInformation.heading.equals(hd)) {
+                            if(meetingInformation.heading.equals(hd) && meetingInformation.state.equals("accepted")) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("rejected");
-                                databaseReference.child("notifications").child(child.getKey()).child("uqid").setValue("rejected");
+                                final String uid = child.getKey();
+                                //databaseReference.child("notifications").child(child.getKey()).child("uqid").setValue("rejected");
+                                databaseReference.child("notifications").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                        for (DataSnapshot child : children) {
+                                            NotificationData notificationData = child.getValue(NotificationData.class);
+                                            if (notificationData.from != null) {
+                                                if (notificationData.from.equals(uid)) {
+                                                    if (notificationData.uqid.equals(fd)) {
+                                                        databaseReference.child("notifications").child(child.getKey()).child("type").setValue("rejected");
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 Toast.makeText(getApplicationContext(), "Rejected", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(PopupshowActivity.this, WeekActivity.class));
                                 finish();

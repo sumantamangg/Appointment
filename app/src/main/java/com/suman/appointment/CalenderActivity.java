@@ -85,7 +85,7 @@ public class CalenderActivity extends AppCompatActivity {
                 else {
                     //tm.setText("Date= "+day);
                     //ym.setText("unique id="+u_id);
-                    databaseReference.child("requests").child(u_id).addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("requests").child(u_id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {

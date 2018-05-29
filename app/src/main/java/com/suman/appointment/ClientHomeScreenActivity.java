@@ -88,8 +88,8 @@ public class ClientHomeScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 auth.signOut();
-                finish();
                 startActivity(new Intent(ClientHomeScreenActivity.this, MainActivity.class));
+                finish();
             }
         });
     }

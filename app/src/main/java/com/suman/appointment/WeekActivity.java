@@ -129,7 +129,7 @@ public class WeekActivity extends AppCompatActivity {
     }
     public  void printweekday(final String fd, final TextView hf, final String date){
 
-        databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

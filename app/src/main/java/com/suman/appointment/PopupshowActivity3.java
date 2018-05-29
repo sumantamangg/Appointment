@@ -71,28 +71,24 @@ public class PopupshowActivity3 extends AppCompatActivity {
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                         for (final DataSnapshot child : children) {
                             MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
-                            if (meetingInformation.agenda.equals(agenda) && meetingInformation.heading.equals(heading)) {
+                            if (meetingInformation.agenda.equals(agenda) && meetingInformation.heading.equals(heading) /* && (meetingInformation.state.equals("requested") || meetingInformation.state.equals("ignored"))*/) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("accepted");
                                 final String uid = child.getKey();
-                                databaseReference.child("notifications").addValueEventListener(new ValueEventListener() {
+                                databaseReference.child("notifications").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                                        Log.i("aaluaalu", "outside for: " + uid);
-                                        Log.i("aaluaalu", "ksdjflkd: " + child.getKey());
                                         for (DataSnapshot child : children) {
                                             NotificationData notificationData = child.getValue(NotificationData.class);
                                             if (notificationData.from != null) {
                                                 if (notificationData.from.equals(uid)) {
-                                                    Log.i("aaluaalu", "from: " + child.child("from"));
                                                     if (notificationData.uqid.equals(fd)) {
-                                                        Log.i("aaluaalu", "uqid: " + child.child("uqid"));
                                                         databaseReference.child("notifications").child(child.getKey()).child("type").setValue("accepted");
                                                         break;
                                                     }
@@ -127,18 +123,18 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 });
             }
         });
-        /*
+
         rejectbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                         for (DataSnapshot child : children) {
                             MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
-                            if(meetingInformation.agenda.equals(agenda)&& meetingInformation.heading.equals(heading)) {
-                                databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("ignore");
+                            if(meetingInformation.agenda.equals(agenda)&& meetingInformation.heading.equals(heading) /*&& meetingInformation.state.equals("requested")*/) {
+                                databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("rejected");
                                 Toast.makeText(getApplicationContext(), "Ignored", Toast.LENGTH_SHORT).show();
                                 break;
                             }
@@ -155,7 +151,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 });
             }
         });
-        */
+
         partyfield.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

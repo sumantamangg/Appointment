@@ -46,7 +46,7 @@ public class PopupshowActivity2 extends AppCompatActivity {
 //        getWindow().setLayout((int) (width * .8), (int) (height * .6));
 
         final String fd = getIntent().getStringExtra("fd");
-        ValueEventListener valueEventListener = databaseReference.child("requests").child(fd).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
