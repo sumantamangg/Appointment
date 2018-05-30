@@ -56,31 +56,78 @@ public class RequestNotificationActivity extends AppCompatActivity {
         reqdate.setText(getIntent().getStringExtra("reqdate"));
         reqdate.setTextColor(Color.BLUE);
 
+        /** If the notification is cancelled type then no button should be visible  **/
         if (getIntent().getStringExtra("noti_type").equals("cancelledType")) {
             acceptbtn.setVisibility(View.INVISIBLE);
             rejectbtn.setVisibility(View.INVISIBLE);
-        } else if (getIntent().getStringExtra("noti_type").equals("acceptedType")) {
+        }
+        /** Again if the notification is of accepted type then no button should be visible**/
+        else if (getIntent().getStringExtra("noti_type").equals("acceptedType")) {
             acceptbtn.setVisibility(View.INVISIBLE);
             rejectbtn.setVisibility(View.INVISIBLE);
             partyfield.setVisibility(View.GONE);
         }
 
+        /** If the request has already been accepted then it should not show accept button **/
+        if (getIntent().getStringExtra("noti_type").equals("requestType")) {
+            databaseReference.child("notifications").child(getIntent().getStringExtra("noti_id")).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String notiType = dataSnapshot.child("type").getValue().toString().trim();
+                    if (notiType.equals("accepted")){
+                        acceptbtn.setVisibility(View.GONE);
+                        rejectbtn.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.child("requests").child(getIntent().getStringExtra("fd")).child(getIntent().getStringExtra("from_user_id")).child("state").setValue("accepted");
-                Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
-                finish();
-                startActivity(new Intent(RequestNotificationActivity.this, AdminHomeActivity.class));
-            }
-        });
+                databaseReference.child("requests").child(getIntent().getStringExtra("fd")).child(getIntent()
+                        .getStringExtra("from_user_id")).child("state").setValue("accepted").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        databaseReference.child("notifications").child(getIntent().getStringExtra("noti_id"))
+                                .child("type").setValue("accepted").addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
+                                finish();
+                                startActivity(new Intent(RequestNotificationActivity.this, AdminHomeActivity.class));
+                            }
+                        });
+                            }
+                        });
+                    }
+                });
+
+
         rejectbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.child("requests").child(getIntent().getStringExtra("fd")).child(getIntent().getStringExtra("from_user_id")).child("state").setValue("ignored");
-                Toast.makeText(getApplicationContext(), "cancelled", Toast.LENGTH_SHORT).show();
-                finish();
-                startActivity(new Intent(RequestNotificationActivity.this, AdminHomeActivity.class));
+                databaseReference.child("requests").child(getIntent().getStringExtra("fd")).child(getIntent()
+                        .getStringExtra("from_user_id")).child("state").setValue("ignored").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        databaseReference.child("notifications").child(getIntent().getStringExtra("noti_id"))
+                                .child("type").setValue("rejected").addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "cancelled", Toast.LENGTH_SHORT).show();
+                                finish();
+                                startActivity(new Intent(RequestNotificationActivity.this, AdminHomeActivity.class));
+                            }
+                        });
+                    }
+                });
+
             }
         });
     }

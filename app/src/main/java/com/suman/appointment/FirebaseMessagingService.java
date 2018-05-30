@@ -23,6 +23,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         String reqdate = remoteMessage.getData().get("reqdate");
         String fd = remoteMessage.getData().get("fd");
         String notification_type = remoteMessage.getData().get("noti_type");
+        String notification_id = remoteMessage.getData().get("noti_id");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                     .setSmallIcon(R.mipmap.ic_launcher)
@@ -37,6 +38,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         resultIntent.putExtra("reqdate",reqdate);
         resultIntent.putExtra("fd",fd);
         resultIntent.putExtra("noti_type",notification_type);
+        resultIntent.putExtra("noti_id",notification_id);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         this,

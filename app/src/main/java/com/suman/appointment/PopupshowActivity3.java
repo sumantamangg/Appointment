@@ -135,6 +135,29 @@ public class PopupshowActivity3 extends AppCompatActivity {
                             MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
                             if(meetingInformation.agenda.equals(agenda)&& meetingInformation.heading.equals(heading) /*&& meetingInformation.state.equals("requested")*/) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("rejected");
+                                final String uid = child.getKey();
+                                databaseReference.child("notifications").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                        for (DataSnapshot child : children) {
+                                            NotificationData notificationData = child.getValue(NotificationData.class);
+                                            if (notificationData.from != null) {
+                                                if (notificationData.from.equals(uid)) {
+                                                    if (notificationData.uqid.equals(fd)) {
+                                                        databaseReference.child("notifications").child(child.getKey()).child("type").setValue("rejected");
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 Toast.makeText(getApplicationContext(), "Ignored", Toast.LENGTH_SHORT).show();
                                 break;
                             }
