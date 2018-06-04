@@ -150,9 +150,12 @@ public class WeekActivity extends AppCompatActivity {
                             hf.setText(meetinginfo.get(i).heading);
                             //hf.setTextColor(Color.GREEN);
 
-                            indicate++;
+                            indicate=1;
                             meetinginfo.clear();
                             break;
+                        }
+                        if(meetinginfo.get(i).state.equals("cancelled")){
+                            indicate =100;
                         }
                     }
                     if (indicate == 0) {
