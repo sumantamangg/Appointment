@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
+    private Button profilebtn;
     private Button calenderviewbtn;
     private Button weekschedulebtn;
     private Button settingsbtn;
@@ -40,6 +41,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         weekschedulebtn = (Button) findViewById(R.id.weekschedulebtn);
         settingsbtn = (Button) findViewById(R.id.settingsbtn);
         logoutbtn = (Button) findViewById(R.id.logoutbtn);
+        profilebtn = findViewById(R.id.profilebtn);
 
 
         if (auth.getCurrentUser() != null) {
@@ -94,6 +96,13 @@ public class AdminHomeActivity extends AppCompatActivity {
                 auth.signOut();
                 startActivity(new Intent(AdminHomeActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+        profilebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+
             }
         });
 

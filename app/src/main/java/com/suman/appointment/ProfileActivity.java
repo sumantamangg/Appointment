@@ -1,6 +1,7 @@
 package com.suman.appointment;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,11 +36,14 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView nationalityfield;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference databaseReference = database.getReference();
+    private Button editbtn;
+    private Button isitbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         u_id=user.getUid();
@@ -49,6 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
         nationalityfield = (TextView) findViewById(R.id.nationalityf);
         String em=user.getEmail();
         view_email.setText("Email: "+em);
+        editbtn = findViewById(R.id.editbtn);
+        isitbtn = findViewById(R.id.isitbtn);
         //view_email = user.getEmail().toString();
         databaseReference.child("users").child(u_id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -77,9 +86,41 @@ public class ProfileActivity extends AppCompatActivity {
             Intent i = new Intent( ProfileActivity.this, MainActivity.class);
             startActivity(i);
         }
+        editbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), "verification email has been sent", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "varification email couldn't be sent", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+        isitbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user.isEmailVerified())
+                {
+                    Toast.makeText(ProfileActivity.this, "verified user", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(ProfileActivity.this, "unverified user", Toast.LENGTH_SHORT).show();
 
 
-
+                }
+            }
+        });
 
 
     }

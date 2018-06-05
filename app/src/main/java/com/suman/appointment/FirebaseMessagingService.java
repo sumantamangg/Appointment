@@ -1,5 +1,6 @@
 package com.suman.appointment;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -28,7 +29,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 new NotificationCompat.Builder(this)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle(notification_title)
-                    .setContentText(notification_message);
+                    .setContentText(notification_message)
+                    .setAutoCancel(true)
+                    .setDefaults(Notification.DEFAULT_SOUND);
 
         Intent resultIntent = new Intent(click_action);
         resultIntent.putExtra("from_user_id",from_user_id);

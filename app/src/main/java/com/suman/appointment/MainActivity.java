@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         appPreference = new MyPreferences(this);
         if (!isOnline()) {
-
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setMessage("Please Connect to internet first");
             dialog.setCancelable(false);
@@ -83,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
         btn_login = (Button) findViewById(R.id.signin);
         progressDialog = new ProgressDialog(this);
         auth = FirebaseAuth.getInstance();
-
         if (auth.getCurrentUser() != null) {
             Log.i("jkkjj", "this is my id: " + auth.getCurrentUser().getUid());
+            progressDialog.setMessage("Connecting Please Wait!");
+            progressDialog.show();
             databaseReference.child("users").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -98,14 +98,17 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("u_id", auth.getCurrentUser().getUid());
                         intent.putExtra("msg", "You haven't completed your Signup. Please complete it");
                         finish();
+                        progressDialog.dismiss();
                         startActivity(intent);
                     } else {
                         if (!auth.getCurrentUser().getUid().equals("BP6sgUJ3dxP0uZT4Yl8sGd9nCOk1")) {
                             startActivity(new Intent(MainActivity.this, ClientHomeScreenActivity.class));
+                            progressDialog.dismiss();
                             return;
                         }
                         Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
                         finish();
+                        progressDialog.dismiss();
                         startActivity(intent);
 
                     }
@@ -116,9 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
         }
-
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

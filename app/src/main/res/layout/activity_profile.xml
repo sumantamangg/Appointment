@@ -197,5 +197,31 @@
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/addressf" />
 
+    <Button
+        android:id="@+id/editbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:text="send verification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13"
+        app:layout_constraintVertical_bias="0.272" />
+
+    <Button
+        android:id="@+id/isitbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="check verfication"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/editbtn"
+        app:layout_constraintTop_toBottomOf="@+id/nationalityf" />
+
 
 </android.support.constraint.ConstraintLayout>
