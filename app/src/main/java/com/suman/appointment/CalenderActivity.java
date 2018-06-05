@@ -1,19 +1,15 @@
 package com.suman.appointment;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,6 +56,10 @@ public class CalenderActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
+                /** check if the user is verified or not.**/
+                if(!IsUserVerified()){
+                    return;
+                }
                 //Log.d("date= ", Integer.toString(year));
                 final String day = Integer.toString(dayOfMonth);
                 final String mnth = Integer.toString(month + 1);
@@ -141,14 +141,20 @@ public class CalenderActivity extends AppCompatActivity {
 //
 //        }
 
-
-
-
     }
     @Override
     public void  onBackPressed(){
         super.onBackPressed();
         startActivity(new Intent(CalenderActivity.this,ClientHomeScreenActivity.class));
         finish();
+    }
+    public boolean IsUserVerified(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (!user.isEmailVerified())
+        {
+            Toast.makeText(CalenderActivity.this, "You haven't verified your email address.", Toast.LENGTH_SHORT).show();
+            return (false);
+        }
+       return (true);
     }
 }
