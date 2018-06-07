@@ -14,7 +14,7 @@ public class UserInformation implements Serializable {
     public String company;
     public String position;
     public String email;
-    public  String temp;
+    public  String dob;
 
 
     public UserInformation(String address, String nationality, String company, String position) {
@@ -24,7 +24,7 @@ public class UserInformation implements Serializable {
         this.position = position;
     }
 
-    public UserInformation(String address, String nationality, String company, String position, String ph, String name, String email) {
+    public UserInformation(String address, String nationality, String company, String position, String ph, String name, String email, String dob) {
         this.address = address;
         this.nationality = nationality;
         this.company = company;
@@ -32,6 +32,7 @@ public class UserInformation implements Serializable {
         this.phone = ph;
         this.name = name;
         this.email = email;
+        this.dob = dob;
 
     }
 

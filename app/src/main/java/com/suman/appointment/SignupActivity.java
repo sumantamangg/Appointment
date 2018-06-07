@@ -59,6 +59,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("jkjj", "after signupactivity: ");
+                progressDialog.setMessage("SigningUp Please Wait!");
+                progressDialog.show();
                 final String email = email_field.getText().toString().trim();
                 final String name = name_field.getText().toString().trim();
                 final String ph = ph_field.getText().toString().trim();
@@ -107,6 +109,7 @@ public class SignupActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = auth.getCurrentUser();
                                     mDatabase.child("users").child(user.getUid()).setValue(userinformation);
+                                    progressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "Account Created", Toast.LENGTH_SHORT).show();
                                     finish();
                                     //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
@@ -119,7 +122,8 @@ public class SignupActivity extends AppCompatActivity {
                                     startActivity(intent);
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Signup Unsuccessfull", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Signup Unsuccessfull please check your email address", Toast.LENGTH_SHORT).show();
                                     return;
 
                                 }

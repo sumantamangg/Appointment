@@ -1,6 +1,10 @@
 package com.suman.appointment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,7 +52,7 @@ public class CalenderActivity extends AppCompatActivity {
 //            startActivity(i);
 //        }
 //
-
+        isUserVerified();
         auth = FirebaseAuth.getInstance();
         mcalendarview = (CalendarView) findViewById(R.id.calender_view);
         mcalendarview.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -58,6 +62,7 @@ public class CalenderActivity extends AppCompatActivity {
 
                 /** check if the user is verified or not.**/
                 if(!IsUserVerified()){
+                    startActivity(new Intent(CalenderActivity.this, EmailVerificationActivity.class));
                     return;
                 }
                 //Log.d("date= ", Integer.toString(year));
@@ -116,6 +121,7 @@ public class CalenderActivity extends AppCompatActivity {
                                             ii.putExtra("MY_kEY", u_id);
                                             ii.putExtra("date", yr + "-" + mnth + "-" + day);
                                             meetinginfo.clear();
+                                            finish();
                                             startActivity(ii);
                                         }
                                     }
@@ -156,5 +162,28 @@ public class CalenderActivity extends AppCompatActivity {
             return (false);
         }
        return (true);
+    }
+    public void isUserVerified(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (!user.isEmailVerified()) {
+            SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+            //boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
+            //if (isFirstRun) {
+                AlertDialog.Builder dialogg = new AlertDialog.Builder(this);
+                dialogg.setTitle("Verify Email");
+                dialogg.setMessage("Please verify your email to proceed with the app");
+                dialogg.setCancelable(false);
+                dialogg.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        startActivity(new Intent(CalenderActivity.this, EmailVerificationActivity.class));
+                    }
+                });
+                dialogg.show();
+                //Toast.makeText(MainActivity.this, "you haven't verified your Email.", Toast.LENGTH_SHORT).show();
+            //}
+        }
+
     }
 }

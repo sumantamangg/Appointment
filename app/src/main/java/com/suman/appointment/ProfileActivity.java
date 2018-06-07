@@ -34,6 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView positionfield;
     private TextView addressfield;
     private TextView nationalityfield;
+    private TextView dobfield;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference databaseReference = database.getReference();
     private Button editbtn;
@@ -54,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         positionfield = (TextView) findViewById(R.id.postitionf);
         addressfield = (TextView) findViewById(R.id.addressf);
         nationalityfield = (TextView) findViewById(R.id.nationalityf);
+        dobfield = findViewById(R.id.dobfield);
         String em=user.getEmail();
         view_email.setText("Email: "+em);
         editbtn = findViewById(R.id.editbtn);
@@ -68,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
                 view_phone.setText(userInformation.phone);
                 addressfield.setText(userInformation.address);
                 nationalityfield.setText(userInformation.nationality);
+                dobfield.setText(userInformation.dob);
                 if(userInformation.company.isEmpty()){
                     companyfield.setText("-");
                     positionfield.setText("-");
@@ -116,7 +119,6 @@ public class ProfileActivity extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(ProfileActivity.this, "unverified user", Toast.LENGTH_SHORT).show();
-
 
                 }
             }
