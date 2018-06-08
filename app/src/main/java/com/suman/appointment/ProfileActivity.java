@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,18 +30,19 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     FirebaseUser user;
     String u_id;
-    private TextView view_name;
-    private TextView view_phone;
-    private TextView view_email;
-    private TextView companyfield;
-    private TextView positionfield;
-    private TextView addressfield;
-    private TextView nationalityfield;
-    private TextView dobfield;
+    private EditText view_name;
+    private EditText view_phone;
+    private EditText view_email;
+    private EditText companyfield;
+    private EditText positionfield;
+    private EditText addressfield;
+    private EditText nationalityfield;
+    private EditText dobfield;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference databaseReference = database.getReference();
-    private Button editbtn;
-    private Button isitbtn;
+    private Button updatebtn;
+    private EditText passwordfield;
+    private Button applyupdatebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +52,19 @@ public class ProfileActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         u_id=user.getUid();
-        view_name = (TextView) findViewById(R.id.name_field);
-        view_phone = (TextView) findViewById(R.id.ph_field);
-        view_email = (TextView) findViewById(R.id.email_field);
-        companyfield = (TextView) findViewById(R.id.companyf);
-        positionfield = (TextView) findViewById(R.id.postitionf);
-        addressfield = (TextView) findViewById(R.id.addressf);
-        nationalityfield = (TextView) findViewById(R.id.nationalityf);
+        view_name =  findViewById(R.id.name_field);
+        view_phone =  findViewById(R.id.ph_field);
+        view_email =  findViewById(R.id.email_field);
+        companyfield =  findViewById(R.id.companyf);
+        positionfield =  findViewById(R.id.postitionf);
+        addressfield =  findViewById(R.id.addressf);
+        nationalityfield =  findViewById(R.id.nationalityf);
         dobfield = findViewById(R.id.dobfield);
         String em=user.getEmail();
         view_email.setText("Email: "+em);
-        editbtn = findViewById(R.id.editbtn);
-        isitbtn = findViewById(R.id.isitbtn);
+        updatebtn = findViewById(R.id.updatebtn);
+        passwordfield = findViewById(R.id.passwordfield);
+        applyupdatebtn = findViewById(R.id.applyupdatebtn);
         //view_email = user.getEmail().toString();
         databaseReference.child("users").child(u_id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,41 +94,65 @@ public class ProfileActivity extends AppCompatActivity {
             Intent i = new Intent( ProfileActivity.this, MainActivity.class);
             startActivity(i);
         }
-        editbtn.setOnClickListener(new View.OnClickListener() {
+        updatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), "verification email has been sent", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "varification email couldn't be sent", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                });
+                passwordfield.setVisibility(view.VISIBLE);
+                updatebtn.setVisibility(view.GONE);
+                applyupdatebtn.setVisibility(view.VISIBLE);
+                view_name.setFocusableInTouchMode(true);
+                view_email.setFocusableInTouchMode(true);
+                view_phone.setFocusableInTouchMode(true);
+                companyfield.setFocusableInTouchMode(true);
+                positionfield.setFocusableInTouchMode(true);
+                addressfield.setFocusableInTouchMode(true);
+
             }
         });
-        isitbtn.setOnClickListener(new View.OnClickListener() {
+        applyupdatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user.isEmailVerified())
-                {
-                    Toast.makeText(ProfileActivity.this, "verified user", Toast.LENGTH_SHORT).show();
+                String name= view_name.getText().toString().trim();
+                String email = view_email.getText().toString().trim();
+                String phone = view_name.getText().toString().trim();
+                String company = companyfield.getText().toString().trim();
+                String position = positionfield.getText().toString().trim();
+                String address = addressfield.getText().toString().trim();
+                String password = passwordfield.getText().toString().trim();
+                if(name.isEmpty() || (email.isEmpty()) || (phone.isEmpty()) || (company.isEmpty())|| (position.isEmpty()) || (address.isEmpty())){
+                    Toast.makeText(getApplicationContext(),"please fill out all the fields", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                else
-                {
-                    Toast.makeText(ProfileActivity.this, "unverified user", Toast.LENGTH_SHORT).show();
+                if(password.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "please enter correct password", Toast.LENGTH_SHORT).show();
+                }
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(reauthenticateuser(email,password)){
 
+                }
+                databaseReference.child("users").child(user.getUid()).child("name").setValue(name);
+                databaseReference.child("users").child(user.getUid()).child("email").setValue(email);
+                databaseReference.child("users").child(user.getUid()).child("phone").setValue(phone);
+                databaseReference.child("users").child(user.getUid()).child("company").setValue(company);
+                databaseReference.child("users").child(user.getUid()).child("position").setValue(position);
+                databaseReference.child("users").child(user.getUid()).child("address").setValue(address);
+
+            }
+        });
+    }
+    public boolean reauthenticateuser (final String newemail, String password){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(user.getEmail(),password);
+        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(!task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Password is not matching ",Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
         });
-
-
+        return false;
     }
 }
