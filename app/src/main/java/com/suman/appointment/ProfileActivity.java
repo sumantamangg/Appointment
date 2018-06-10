@@ -122,7 +122,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String name= view_name.getText().toString().trim();
                 String email = view_email.getText().toString().trim();
-                String phone = view_name.getText().toString().trim();
+                String phone = view_phone.getText().toString().trim();
                 String company = companyfield.getText().toString().trim();
                 String position = positionfield.getText().toString().trim();
                 String address = addressfield.getText().toString().trim();
@@ -133,11 +133,13 @@ public class ProfileActivity extends AppCompatActivity {
                 }
                 if(password.isEmpty()){
                     Toast.makeText(getApplicationContext(), "please enter correct password", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    Log.i("jkjjkk"   , "onClick: "+password);
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    String[] arr = {name,email,phone,company,position,address,password};
+                    reauthenticateuser(email,password,arr);
                 }
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String[] arr = {name,email,phone,company,position,address,password};
-                reauthenticateuser(email,password,arr);
-
 
             }
         });
@@ -149,17 +151,22 @@ public class ProfileActivity extends AppCompatActivity {
         user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(!task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Password is not matching ",Toast.LENGTH_SHORT).show();
-                    databaseReference.child("users").child(user.getUid()).child("name").setValue(arr[0]);
-                    databaseReference.child("users").child(user.getUid()).child("email").setValue(arr[1]);
-                    databaseReference.child("users").child(user.getUid()).child("phone").setValue(arr[2]);
-                    databaseReference.child("users").child(user.getUid()).child("company").setValue(arr[3]);
-                    databaseReference.child("users").child(user.getUid()).child("position").setValue(arr[4]);
-                    databaseReference.child("users").child(user.getUid()).child("address").setValue(arr[5]);
+                if(task.isSuccessful()){
+                    user.updateEmail(newemail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            databaseReference.child("users").child(user.getUid()).child("name").setValue(arr[0]);
+                            databaseReference.child("users").child(user.getUid()).child("email").setValue(arr[1]);
+                            databaseReference.child("users").child(user.getUid()).child("phone").setValue(arr[2]);
+                            databaseReference.child("users").child(user.getUid()).child("company").setValue(arr[3]);
+                            databaseReference.child("users").child(user.getUid()).child("position").setValue(arr[4]);
+                            databaseReference.child("users").child(user.getUid()).child("address").setValue(arr[5]);
+                        }
+                    });
+
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Your password is wrong, try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Password is not matching ",Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
