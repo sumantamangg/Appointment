@@ -43,6 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Button updatebtn;
     private EditText passwordfield;
     private Button applyupdatebtn;
+    private TextView txt1;
+    private TextView txt0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class ProfileActivity extends AppCompatActivity {
         updatebtn = findViewById(R.id.updatebtn);
         passwordfield = findViewById(R.id.passwordfield);
         applyupdatebtn = findViewById(R.id.applyupdatebtn);
+        txt0 = findViewById(R.id.txt0);
+        txt1 = findViewById(R.id.txt1);
         //view_email = user.getEmail().toString();
         databaseReference.child("users").child(u_id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -106,6 +110,10 @@ public class ProfileActivity extends AppCompatActivity {
                 companyfield.setFocusableInTouchMode(true);
                 positionfield.setFocusableInTouchMode(true);
                 addressfield.setFocusableInTouchMode(true);
+                dobfield.setVisibility(view.GONE);
+                nationalityfield.setVisibility(view.GONE);
+                txt0.setVisibility(view.GONE);
+                txt1.setVisibility(view.GONE);
 
             }
         });
@@ -127,20 +135,14 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "please enter correct password", Toast.LENGTH_SHORT).show();
                 }
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(reauthenticateuser(email,password)){
+                String[] arr = {name,email,phone,company,position,address,password};
+                reauthenticateuser(email,password,arr);
 
-                }
-                databaseReference.child("users").child(user.getUid()).child("name").setValue(name);
-                databaseReference.child("users").child(user.getUid()).child("email").setValue(email);
-                databaseReference.child("users").child(user.getUid()).child("phone").setValue(phone);
-                databaseReference.child("users").child(user.getUid()).child("company").setValue(company);
-                databaseReference.child("users").child(user.getUid()).child("position").setValue(position);
-                databaseReference.child("users").child(user.getUid()).child("address").setValue(address);
 
             }
         });
     }
-    public boolean reauthenticateuser (final String newemail, String password){
+    public boolean reauthenticateuser (final String newemail, String password, final String arr[]){
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider
                 .getCredential(user.getEmail(),password);
@@ -149,6 +151,15 @@ public class ProfileActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){
                     Toast.makeText(getApplicationContext(),"Password is not matching ",Toast.LENGTH_SHORT).show();
+                    databaseReference.child("users").child(user.getUid()).child("name").setValue(arr[0]);
+                    databaseReference.child("users").child(user.getUid()).child("email").setValue(arr[1]);
+                    databaseReference.child("users").child(user.getUid()).child("phone").setValue(arr[2]);
+                    databaseReference.child("users").child(user.getUid()).child("company").setValue(arr[3]);
+                    databaseReference.child("users").child(user.getUid()).child("position").setValue(arr[4]);
+                    databaseReference.child("users").child(user.getUid()).child("address").setValue(arr[5]);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Your password is wrong, try again.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
