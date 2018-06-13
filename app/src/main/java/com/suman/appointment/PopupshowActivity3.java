@@ -18,7 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PopupshowActivity3 extends AppCompatActivity {
@@ -33,6 +38,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
+
     final List<MeetingInformation> meetinginfo = new ArrayList<MeetingInformation>();
 
 
@@ -90,6 +96,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                                                 if (notificationData.from.equals(uid)) {
                                                     if (notificationData.uqid.equals(fd)) {
                                                         databaseReference.child("notifications").child(child.getKey()).child("type").setValue("accepted");
+                                                        managedb();
                                                         break;
                                                     }
                                                 }
@@ -124,6 +131,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
             }
         });
 
+
         rejectbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +154,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                                                 if (notificationData.from.equals(uid)) {
                                                     if (notificationData.uqid.equals(fd)) {
                                                         databaseReference.child("notifications").child(child.getKey()).child("type").setValue("rejected");
+                                                        managedb();
                                                         break;
                                                     }
                                                 }
@@ -202,6 +211,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                                             intent.putExtra("company", userInformation.company);
                                             intent.putExtra("position", userInformation.position);
                                         }
+                                        managedb();
                                         startActivity(intent);
                                     }
 
@@ -224,9 +234,80 @@ public class PopupshowActivity3 extends AppCompatActivity {
             }
         });
 
+
     }
+    /** manage database either delete em or move em. **/
+    public void managedb(){
 
+        databaseReference.child("dbms").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                if(dataSnapshot.getValue()!=null) {
+                    String date = dataSnapshot.getValue().toString().trim();
+                    Log.i("jkjjj", "onDataChange: " + date);
+                    String year = new String();
+                    String month = new String();
+                    String day = new String();
+                    int j = 0;
+                    int m = 0;
+                    int d = 0;
+                    for (int i = 0; i < date.length(); i++) {
+                        if (date.charAt(i) == '-') {
+                            j++;
+                            continue;
+                        }
 
+                        if (j == 0) {
+                            String temp = String.valueOf(date.charAt(i));
+                            year = year + temp;
+                            continue;
+                        }
+                        if (j == 1) {
+                            String temp = String.valueOf(date.charAt(i));
+                            month = month + temp;
+                            m++;
+                            continue;
+                        }
+                        if (j == 2) {
+                            String temp = String.valueOf(date.charAt(i));
+                            day = day + temp;
+                            d++;
+                            continue;
+                        }
+                    }
 
+                    int temp = Integer.valueOf(month);
+                    temp++;
+                    String month2 = String.valueOf(temp);
+                    String dbms = year + "-" + month2 + "-" + day;
+                    Log.i("sumaney", "onDataChange: " + dbms);
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+                    Date date2 = null;
+                    try {
+                        date2 = formatter.parse(dbms);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    SimpleDateFormat formatterq = new SimpleDateFormat("yyyy-mm-dd");
+                    Date date3 = new Date();
+                    if(date3.after(date2)){
+                        Log.i("lovelyman", "yes: ");
+                    }
+                    else{
+                        Log.i("lovelyman", "no: ");
+                    }
+                    Log.i("sumaney", "onDataChange: " + date2);
+                    Log.i("sumaney", "current date: " + date3);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
