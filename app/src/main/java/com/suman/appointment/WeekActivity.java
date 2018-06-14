@@ -81,13 +81,13 @@ public class WeekActivity extends AppCompatActivity {
 
 
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat firebaseformat = new SimpleDateFormat("yyyyMd");
+        SimpleDateFormat firebaseformat = new SimpleDateFormat("yyyy-M-d");
 
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
 
         String date1=dateformat.format(c.getTime());  //get time format in string
-        final String fd1=firebaseformat.format(c.getTime());  //get time in firebase format (yyyydm)
+        final String fd1=firebaseformat.format(c.getTime());  //get time in firebase format (yyyy-MM-dd)
         datefield1.setText(date1);
         c.add(Calendar.DATE, 1);                 //increase date by one day
         String date2=dateformat.format(c.getTime());
@@ -113,7 +113,7 @@ public class WeekActivity extends AppCompatActivity {
         String date7=dateformat.format(c.getTime());
         final String fd7=firebaseformat.format(c.getTime());
         datefield7.setText(date7);
-
+        Log.i("testingg", "today=: "+fd1);
 
         printweekday(fd1,headingfield1,date1);  //call printing function
         printweekday(fd2,headingfield2,date2);  //call printing function

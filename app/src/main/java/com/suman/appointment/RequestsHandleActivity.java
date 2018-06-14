@@ -55,10 +55,10 @@ public class RequestsHandleActivity extends AppCompatActivity {
                 String yr=Integer.toString(year);
                 final String date = yr+"-"+mnth+"-"+day;
                 final String d1=yr+mnth+day;
-                SimpleDateFormat firebaseformat = new SimpleDateFormat("yyyyMd");
+                SimpleDateFormat firebaseformat = new SimpleDateFormat("yyyy-M-d");
                 Date ddd = null;
                 try {
-                    ddd = firebaseformat.parse(d1);
+                    ddd = firebaseformat.parse(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -73,7 +73,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    databaseReference.child("requests").child(d1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    databaseReference.child("requests").child(date).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
@@ -88,14 +88,14 @@ public class RequestsHandleActivity extends AppCompatActivity {
                                 for (int i=0; i<meetinginfo.size();i++){
                                     if(meetinginfo.get(i).state.equals("accepted")){
                                         Intent intent = new Intent(RequestsHandleActivity.this, PopupshowActivity.class);
-                                        intent.putExtra("fd",d1);
+                                        intent.putExtra("fd",date);
                                         intent.putExtra("date", date);
                                         startActivity(intent);
                                         meetinginfo.clear();
                                     }
                                     else {
                                         Intent intent = new Intent(RequestsHandleActivity.this, PopupshowActivity2.class);
-                                        intent.putExtra("fd",d1);
+                                        intent.putExtra("fd",date);
                                         intent.putExtra("date", date+" (Pending Requests)");
                                         intent.putExtra("backbtn","rqst");
                                         startActivity(intent);

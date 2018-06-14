@@ -165,7 +165,7 @@ public class PopupshowActivity extends AppCompatActivity {
                                             if (notificationData.from != null) {
                                                 if (notificationData.from.equals(uid)) {
                                                     if (notificationData.uqid.equals(fd)) {
-                                                        databaseReference.child("notifications").child(child.getKey()).child("type").setValue("rejected");
+                                                        databaseReference.child("notifications").child(child.getKey()).removeValue();
                                                         break;
                                                     }
                                                 }

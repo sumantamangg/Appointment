@@ -242,66 +242,47 @@ public class PopupshowActivity3 extends AppCompatActivity {
         databaseReference.child("dbms").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.getValue()!=null) {
-                    String date = dataSnapshot.getValue().toString().trim();
-                    Log.i("jkjjj", "onDataChange: " + date);
-                    String year = new String();
-                    String month = new String();
-                    String day = new String();
-                    int j = 0;
-                    int m = 0;
-                    int d = 0;
-                    for (int i = 0; i < date.length(); i++) {
-                        if (date.charAt(i) == '-') {
-                            j++;
-                            continue;
-                        }
-
-                        if (j == 0) {
-                            String temp = String.valueOf(date.charAt(i));
-                            year = year + temp;
-                            continue;
-                        }
-                        if (j == 1) {
-                            String temp = String.valueOf(date.charAt(i));
-                            month = month + temp;
-                            m++;
-                            continue;
-                        }
-                        if (j == 2) {
-                            String temp = String.valueOf(date.charAt(i));
-                            day = day + temp;
-                            d++;
-                            continue;
-                        }
-                    }
-
-                    int temp = Integer.valueOf(month);
-                    temp++;
-                    String month2 = String.valueOf(temp);
-                    String dbms = year + "-" + month2 + "-" + day;
-                    Log.i("sumaney", "onDataChange: " + dbms);
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-                    Date date2 = null;
-                    try {
-                        date2 = formatter.parse(dbms);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    SimpleDateFormat formatterq = new SimpleDateFormat("yyyy-mm-dd");
-                    Date date3 = new Date();
-                    if(date3.after(date2)){
-                        Log.i("lovelyman", "yes: ");
-                    }
-                    else{
-                        Log.i("lovelyman", "no: ");
-                    }
-                    Log.i("sumaney", "onDataChange: " + date2);
-                    Log.i("sumaney", "current date: " + date3);
-
+                String date = dataSnapshot.getValue().toString().trim();
+                Log.i("jkjj", "onDataChange:1 "+date);
+                SimpleDateFormat formatter2=new SimpleDateFormat("yyyy-MM-dd");
+                Date prevDate =null;
+                try {
+                    prevDate=formatter2.parse(date);
+                    Log.i("jkjjj", "onDataChange:2 "+prevDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
 
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(prevDate);
+                int yr = cal.get(Calendar.YEAR);
+                int mnth = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                mnth++;
+
+                /**Log.i("jkjjj", "year: "+yr);
+                Log.i("jkjjj", "month: "+mnth);
+                Log.i("jkjjj", "day: "+day); **/
+
+                Calendar currentD = Calendar.getInstance();
+                currentD.setTime(new Date());
+                int yr1 = currentD.get(Calendar.YEAR);
+                int mnth1 = currentD.get(Calendar.MONTH);
+                int day1 = currentD.get(Calendar.DAY_OF_MONTH);
+                Log.i("jkjjj", "year: "+yr1);
+                Log.i("jkjjj", "month: "+mnth1);
+                Log.i("jkjjj", "day: "+day1);
+                String currentdate = Integer.toString(yr1)+'-'+Integer.toString(mnth1++)+'-'+Integer.toString(day1); //firebase format
+                if(yr1 == yr){
+                    if(mnth1<mnth){
+                        databaseReference.child("dbms").setValue(currentdate);
+                        Log.i("jkjjj", "done: ");
+                        // one month ko data delete garnu paryo.
+                    }
+                }
+                else {
+
+                }
             }
 
             @Override
@@ -309,5 +290,6 @@ public class PopupshowActivity3 extends AppCompatActivity {
 
             }
         });
+
     }
 }

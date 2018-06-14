@@ -69,9 +69,9 @@ public class CalenderActivity extends AppCompatActivity {
                 final String day = Integer.toString(dayOfMonth);
                 final String mnth = Integer.toString(month + 1);
                 final String yr = Integer.toString(year);
-                final String u_id = yr + mnth + day;
+                final String u_id = yr +"-"+ mnth +"-"+ day;
 
-                SimpleDateFormat firebaseformat = new SimpleDateFormat("yyyyMd");
+                SimpleDateFormat firebaseformat = new SimpleDateFormat("yyyy-MM-dd");
                 Date ddd = null;
                 try {
                     ddd = firebaseformat.parse(u_id);
