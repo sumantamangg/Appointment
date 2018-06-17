@@ -248,7 +248,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 Date prevDate =null;
                 try {
                     prevDate=formatter2.parse(date);
-                    Log.i("jkjjj", "onDataChange:2 "+prevDate);
+                    //Log.i("jkjjj", "onDataChange:2 "+prevDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -267,21 +267,21 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 Calendar currentD = Calendar.getInstance();
                 currentD.setTime(new Date());
                 int yr1 = currentD.get(Calendar.YEAR);
-                int mnth1 = currentD.get(Calendar.MONTH);
+                int mnth1 = currentD.get(Calendar.MONTH)+1;
                 int day1 = currentD.get(Calendar.DAY_OF_MONTH);
-                Log.i("jkjjj", "year: "+yr1);
-                Log.i("jkjjj", "month: "+mnth1);
-                Log.i("jkjjj", "day: "+day1);
+                Log.i("jkjjj", "current: "+yr1+"-"+mnth1+"-"+day1);
+                Log.i("jkjjj", "prev: "+yr+"-"+mnth+"-"+day);
                 String currentdate = Integer.toString(yr1)+'-'+Integer.toString(mnth1++)+'-'+Integer.toString(day1); //firebase format
                 if(yr1 == yr){
-                    if(mnth1<mnth){
+                    Log.i("jkjjj", "current = prec : ");
+                    if(mnth1>mnth){
                         databaseReference.child("dbms").setValue(currentdate);
                         Log.i("jkjjj", "done: ");
                         // one month ko data delete garnu paryo.
                     }
                 }
                 else {
-
+                    databaseReference.child("dbms").setValue("2018-1-1");
                 }
             }
 
