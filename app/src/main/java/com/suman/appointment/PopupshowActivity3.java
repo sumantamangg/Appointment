@@ -1,5 +1,6 @@
 package com.suman.appointment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
     private Button acceptbtn;
     private Button rejectbtn;
     FirebaseAuth auth;
+    private ProgressDialog progressDialog;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
@@ -73,10 +75,13 @@ public class PopupshowActivity3 extends AppCompatActivity {
         agendafield.setTextColor(Color.BLUE);
         partyfield.setText("-" + party);
         partyfield.setTextColor(Color.RED);
+        progressDialog = new ProgressDialog(this);
 
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setMessage("Please Wait!");
+                progressDialog.show();
                 databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -97,6 +102,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                                                     if (notificationData.uqid.equals(fd)) {
                                                         databaseReference.child("notifications").child(child.getKey()).child("type").setValue("accepted");
                                                         managedb();
+                                                        progressDialog.dismiss();
                                                         break;
                                                     }
                                                 }
@@ -264,8 +270,9 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 Log.i("jkjjj", "month: "+mnth);
                 Log.i("jkjjj", "day: "+day); **/
 
-                Calendar currentD = Calendar.getInstance();
+                final Calendar currentD = Calendar.getInstance();
                 currentD.setTime(new Date());
+                currentD.add(Calendar.MONTH, 2);
                 int yr1 = currentD.get(Calendar.YEAR);
                 int mnth1 = currentD.get(Calendar.MONTH)+1;
                 int day1 = currentD.get(Calendar.DAY_OF_MONTH);
@@ -275,6 +282,54 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 if(yr1 == yr){
                     Log.i("jkjjj", "current = prec : ");
                     if(mnth1>mnth){
+                        databaseReference.child("requests").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                for (DataSnapshot child : children){
+                                    final String child_date = child.getKey();
+                                    Date ch_date = null;
+                                    SimpleDateFormat formatter3=new SimpleDateFormat("yyyy-MM-dd");
+                                    try {
+                                        ch_date = formatter3.parse(child_date);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    //Log.i("jkjjj", "ch_date: "+child_date);
+                                    /**  if the current child date is before the current date execute the following command.**/
+                                    if(!currentD.after(ch_date)){
+                                        //Log.i("jkjjj", "yes it is after: ");
+                                        databaseReference.child("requests").child(child_date).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                                for (DataSnapshot child : children){
+                                                    Log.i("jkjjj", "yes it is after: "+ child.child("state").getValue().toString());
+                                                    if(child.child("state").getValue().toString().equals("accepted")){
+                                                        Log.i("jkjjj", "yes it is after that: ");
+                                                        String node = child_date;
+                                                        databaseReference.child("appointments").child(node).setValue(child.getValue());
+                                                    }
+                                                }
+                                                databaseReference.child("requests").child(child_date).removeValue();
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                         databaseReference.child("dbms").setValue(currentdate);
                         Log.i("jkjjj", "done: ");
                         // one month ko data delete garnu paryo.
