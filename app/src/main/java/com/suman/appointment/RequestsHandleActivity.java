@@ -1,6 +1,7 @@
 package com.suman.appointment;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -30,6 +31,8 @@ public class RequestsHandleActivity extends AppCompatActivity {
     final List<MeetingInformation> meetinginfo = new ArrayList<MeetingInformation>();
 
     Long date;
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getIntent().getStringExtra("REQUESTS"));
         mcalendarview = (CalendarView) findViewById(R.id.calender_view2);
         date = mcalendarview.getDate();
+        progressDialog = new ProgressDialog(this);
         mcalendarview.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @TargetApi(Build.VERSION_CODES.O)
@@ -49,7 +53,8 @@ public class RequestsHandleActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-
+                progressDialog.setMessage("Wait A Second!");
+                progressDialog.show();
                 String day=Integer.toString(dayOfMonth);
                 String mnth=Integer.toString(month+1);
                 String yr=Integer.toString(year);
@@ -69,7 +74,102 @@ public class RequestsHandleActivity extends AppCompatActivity {
 
                 //Log.i("akj", "calendere date: "+d1);
                 if (ck.getTime().after(ddd)) {
-                    Toast.makeText(getApplicationContext(), "Sorry!! data not available", Toast.LENGTH_SHORT).show();
+                    databaseReference.child("appointments").child(date).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()) {
+                                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                for (DataSnapshot child : children) {
+                                    MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
+                                    final String agenda = meetingInformation.getAgenda();
+                                    final String heading = meetingInformation.getHeading();
+                                    final String uid = child.getKey().toString();
+                                    databaseReference.child("users").child(uid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            progressDialog.dismiss();
+                                            Intent intent = new Intent(RequestsHandleActivity.this, OldDataActivity.class);
+                                            if(dataSnapshot.exists()) {
+                                                String party = dataSnapshot.getValue().toString().trim();
+                                                intent.putExtra("name",party);
+                                            }
+                                                intent.putExtra("agenda", agenda);
+                                                intent.putExtra("heading", heading);
+                                                intent.putExtra("uid", uid);
+                                                intent.putExtra("date", date);
+                                                startActivity(intent);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+
+                                }
+                            else /** check in requests node*/
+                                {
+                                //Toast.makeText(getApplicationContext(), "Sorry!! data not available", Toast.LENGTH_SHORT).show();
+                                databaseReference.child("requests").child(date).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.exists()) {
+                                            Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                            for (DataSnapshot child : children) {
+                                                MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
+                                                if(meetingInformation.getState().equals("accepted")){
+                                                    final String uid = child.getKey().toString();
+                                                    final String agenda = meetingInformation.getAgenda();
+                                                    final String heading = meetingInformation.getHeading();
+                                                    databaseReference.child("users").child(uid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            progressDialog.dismiss();
+                                                            Intent intent = new Intent(RequestsHandleActivity.this, OldDataActivity.class);
+                                                            if(dataSnapshot.exists()) {
+                                                                String party = dataSnapshot.getValue().toString().trim();
+                                                                intent.putExtra("name",party);
+                                                            }
+                                                            intent.putExtra("agenda", agenda);
+                                                            intent.putExtra("heading", heading);
+                                                            intent.putExtra("uid", uid);
+                                                            intent.putExtra("date", date);
+                                                            startActivity(intent);
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        }
+                                        else{
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getApplicationContext(), "Sorry!! data not available", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    //Intent intent = new Intent(RequestsHandleActivity.this, PopupshowActivity3.class);
                     return;
                 }
                 else {
@@ -86,6 +186,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
                                     meetinginfo.add(meetingInformation);
                                 }
                                 for (int i=0; i<meetinginfo.size();i++){
+                                    progressDialog.dismiss();
                                     if(meetinginfo.get(i).state.equals("accepted")){
                                         Intent intent = new Intent(RequestsHandleActivity.this, PopupshowActivity.class);
                                         intent.putExtra("fd",date);

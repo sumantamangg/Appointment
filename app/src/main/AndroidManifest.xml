@@ -74,6 +74,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".EmailVerificationActivity" />
+        <activity
+            android:name=".OldDataActivity"
+            android:label="Request"
+            android:theme="@style/AppTheme.CustomTheme" ></activity>
     </application>
 
 </manifest>

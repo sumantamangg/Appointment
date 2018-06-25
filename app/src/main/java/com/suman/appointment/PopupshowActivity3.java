@@ -80,8 +80,8 @@ public class PopupshowActivity3 extends AppCompatActivity {
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog.setMessage("Please Wait!");
-                progressDialog.show();
+                //progressDialog.setMessage("Please Wait!");
+                //progressDialog.show();
                 databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,7 +102,6 @@ public class PopupshowActivity3 extends AppCompatActivity {
                                                     if (notificationData.uqid.equals(fd)) {
                                                         databaseReference.child("notifications").child(child.getKey()).child("type").setValue("accepted");
                                                         managedb();
-                                                        progressDialog.dismiss();
                                                         break;
                                                     }
                                                 }
@@ -254,89 +253,83 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 Date prevDate =null;
                 try {
                     prevDate=formatter2.parse(date);
-                    //Log.i("jkjjj", "onDataChange:2 "+prevDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(prevDate);
-                int yr = cal.get(Calendar.YEAR);
-                int mnth = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                mnth++;
-
-                /**Log.i("jkjjj", "year: "+yr);
-                Log.i("jkjjj", "month: "+mnth);
-                Log.i("jkjjj", "day: "+day); **/
-
+                /** calender format wala current date**/
                 final Calendar currentD = Calendar.getInstance();
                 currentD.setTime(new Date());
-                currentD.add(Calendar.MONTH, 2);
+
+                /** date format wala date **/
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                final Date currentDt = new Date();
+                //final Date checkingdd = new Date();
+                //checkingdd.setMonth(currentDt.getMonth() + 1); //current date lai one month le badhako
+
+                /** firebase ma halney format wala current date*/
                 int yr1 = currentD.get(Calendar.YEAR);
                 int mnth1 = currentD.get(Calendar.MONTH)+1;
-                int day1 = currentD.get(Calendar.DAY_OF_MONTH);
-                Log.i("jkjjj", "current: "+yr1+"-"+mnth1+"-"+day1);
-                Log.i("jkjjj", "prev: "+yr+"-"+mnth+"-"+day);
+                int day1 = currentD.get(Calendar.DAY_OF_MONTH)-1;
                 String currentdate = Integer.toString(yr1)+'-'+Integer.toString(mnth1++)+'-'+Integer.toString(day1); //firebase format
-                if(yr1 == yr){
-                    Log.i("jkjjj", "current = prec : ");
-                    if(mnth1>mnth){
-                        databaseReference.child("requests").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                                for (DataSnapshot child : children){
-                                    final String child_date = child.getKey();
-                                    Date ch_date = null;
-                                    SimpleDateFormat formatter3=new SimpleDateFormat("yyyy-MM-dd");
-                                    try {
-                                        ch_date = formatter3.parse(child_date);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                    //Log.i("jkjjj", "ch_date: "+child_date);
-                                    /**  if the current child date is before the current date execute the following command.**/
-                                    if(!currentD.after(ch_date)){
-                                        //Log.i("jkjjj", "yes it is after: ");
-                                        databaseReference.child("requests").child(child_date).addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                                                for (DataSnapshot child : children){
-                                                    Log.i("jkjjj", "yes it is after: "+ child.child("state").getValue().toString());
-                                                    if(child.child("state").getValue().toString().equals("accepted")){
-                                                        Log.i("jkjjj", "yes it is after that: ");
-                                                        String node = child_date;
-                                                        databaseReference.child("appointments").child(node).setValue(child.getValue());
-                                                    }
-                                                }
-                                                databaseReference.child("requests").child(child_date).removeValue();
+                Log.i("jkjj", "currentdate: "+currentdate);
 
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        });
-                                    }
-
+                /** if current date is 6 days ahead than prev date */
+                if(currentDt.compareTo(prevDate) > 0) {
+                    databaseReference.child("requests").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                            for (DataSnapshot child : children) {
+                                final String child_date = child.getKey();
+                                Date ch_date = null;
+                                SimpleDateFormat formatter3 = new SimpleDateFormat("yyyy-MM-dd");
+                                try {
+                                    ch_date = formatter3.parse(child_date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
-                            }
+                                //Log.i("jkjjj", "ch_date: "+child_date);
+                                /**  if the current child date is before the current date execute the following command.**/
+                                if (currentDt.after(ch_date)) {
+                                    //Log.i("jkjjj", "yes it is after: ");
+                                    databaseReference.child("requests").child(child_date).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                            for (DataSnapshot child : children) {
+                                                if (child.child("state").getValue().toString().equals("accepted")) {
+                                                    Log.i("jkjjj", "yes it is after that: ");
+                                                    String node = child_date;
+                                                    String uid = child.getKey().toString();
+                                                    databaseReference.child("appointments").child(node).child(uid).setValue(child.getValue());
+                                                    break;
+                                                }
+                                            }
+                                            databaseReference.child("requests").child(child_date).setValue(null);
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
 
                             }
-                        });
-                        databaseReference.child("dbms").setValue(currentdate);
-                        Log.i("jkjjj", "done: ");
-                        // one month ko data delete garnu paryo.
-                    }
-                }
-                else {
-                    databaseReference.child("dbms").setValue("2018-1-1");
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    databaseReference.child("dbms").setValue(currentdate);
+                    Log.i("jkjjj", "done: ");
+                    // one month ko data delete garnu paryo.
+
+
                 }
             }
 

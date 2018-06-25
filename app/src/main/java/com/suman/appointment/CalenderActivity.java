@@ -81,7 +81,7 @@ public class CalenderActivity extends AppCompatActivity {
 
                 Calendar ck = Calendar.getInstance();
                 ck.setTime(new Date());
-                //ck.add(Calendar.DATE, 6);
+                ck.add(Calendar.DATE, 6);
                 if (ck.getTime().after(ddd)) {
                     Toast.makeText(getApplicationContext(), "Sorry! You need to book a week advance.", Toast.LENGTH_SHORT).show();
                     meetinginfo.clear();
