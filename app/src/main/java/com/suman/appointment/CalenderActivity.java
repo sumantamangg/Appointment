@@ -36,7 +36,6 @@ public class CalenderActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     final List<MeetingInformation> meetinginfo = new ArrayList<MeetingInformation>();
 
-
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference databaseReference = database.getReference();
     @Override
@@ -52,8 +51,12 @@ public class CalenderActivity extends AppCompatActivity {
 //            startActivity(i);
 //        }
 //
-        isUserVerified();
         auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            Intent i = new Intent(CalenderActivity.this, MainActivity.class);
+            startActivity(i);
+        }
+        isUserVerified();
         mcalendarview = (CalendarView) findViewById(R.id.calender_view);
         mcalendarview.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 

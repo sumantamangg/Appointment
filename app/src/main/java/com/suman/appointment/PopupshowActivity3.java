@@ -172,7 +172,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
 
                                     }
                                 });
-                                Toast.makeText(getApplicationContext(), "Ignored", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Rejected", Toast.LENGTH_SHORT).show();
                                 break;
                             }
 
@@ -274,7 +274,7 @@ public class PopupshowActivity3 extends AppCompatActivity {
                 String currentdate = Integer.toString(yr1)+'-'+Integer.toString(mnth1++)+'-'+Integer.toString(day1); //firebase format
                 Log.i("jkjj", "currentdate: "+currentdate);
 
-                /** if current date is 6 days ahead than prev date */
+                /** if current date is 6 days ahead than prev date was supposed to be */
                 if(currentDt.compareTo(prevDate) > 0) {
                     databaseReference.child("requests").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

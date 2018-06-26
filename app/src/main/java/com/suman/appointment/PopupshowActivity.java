@@ -54,7 +54,7 @@ public class PopupshowActivity extends AppCompatActivity {
 
 
         final String fd = getIntent().getStringExtra("fd");
-        final String hd = getIntent().getStringExtra("hf");
+        final String hd = getIntent().getStringExtra("hd");
 
         final List<String> keys = new ArrayList<String>();
         databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -145,13 +145,13 @@ public class PopupshowActivity extends AppCompatActivity {
         rejectbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("jkjjj", "inside reject: ");
                 databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                         for (DataSnapshot child : children) {
                             MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
-
                             if(meetingInformation.heading.equals(hd) && meetingInformation.state.equals("accepted")) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("rejected");
                                 final String uid = child.getKey();

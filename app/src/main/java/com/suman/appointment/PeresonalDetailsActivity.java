@@ -161,4 +161,32 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
         });
         dialogg.show();
     }
+
+    public void  onBackPressed(){
+        //super.onBackPressed();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Please complete your signup");
+        //dialog.setMessage("Do you still wish to go back?");
+        dialog.setCancelable(false);
+        dialog.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        dialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory( Intent.CATEGORY_HOME );
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+            }
+        });
+        dialog.show();
+
+        //startActivity(new Intent(SignupActivity.this,MainActivity.class));
+        //finish();
+    }
 }

@@ -66,28 +66,34 @@ public class SignupActivity extends AppCompatActivity {
                 final String ph = ph_field.getText().toString().trim();
                 String pass = pass_field.getText().toString().trim();
                 if (TextUtils.isEmpty(name)) {
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Enter your Full name!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(ph)) {
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Enter phone number!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(email)) {
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Enter Email!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(pass)) {
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Enter Password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (pass_field.getText().length() < 6) {
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Password should be of 6 length", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (!Patterns.EMAIL_ADDRESS.matcher(email_field.getText().toString()).matches()){
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Enter valid email address", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -129,18 +135,11 @@ public class SignupActivity extends AppCompatActivity {
                                 }
                             }
                         });
-////                HashMap<String, String> dataMap= new HashMap<String, String>();
-////                dataMap.put("name",name);
-////                dataMap.put("phone",ph);
-////                dataMap.put("email",email);
-////                dataMap.put("password",pass);
-////                mDatabase.push().setValue(dataMap);
-////                Toast.makeText(getApplicationContext(), "Signup successfull", Toast.LENGTH_SHORT).show();
-////                Intent i = new Intent( SignupActivity.this, MainActivity.class);
-////                startActivity(i);
+
 
             }
         });
+
 
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -154,6 +153,11 @@ public class SignupActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+    public void  onBackPressed(){
+        super.onBackPressed();
+        startActivity(new Intent(SignupActivity.this,MainActivity.class));
+        finish();
     }
 
 }

@@ -2,6 +2,7 @@ package com.suman.appointment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +25,7 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
     private TextView headingfield;
     private TextView agendafield;
     private Button cancelbtn;
+    private  Button resendbtn;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     private FirebaseAuth auth;
@@ -42,17 +46,17 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
         headingfield = (TextView) findViewById(R.id.headingText);
         agendafield = (TextView) findViewById(R.id.agendaText);
         cancelbtn = (Button) findViewById(R.id.cancelbtn);
+        resendbtn = findViewById(R.id.resendbtn);
 
         headingfield.setText(getIntent().getStringExtra("heading"));
         headingfield.setTextColor(Color.BLUE);
         agendafield.setText(getIntent().getStringExtra("agenda"));
         agendafield.setTextColor(Color.BLUE);
-        cancelbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        if(getIntent().getStringExtra("state").equals("cancelled")){
+            cancelbtn.setVisibility(View.GONE);
+            resendbtn.setVisibility(View.VISIBLE);
+            resendbtn.setBackgroundColor(Color.GREEN);
+        }
         cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +88,23 @@ public class MyRequestsOptionActivity extends AppCompatActivity {
 
             }
 
+        });
+        resendbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.child("requests").child(getIntent().getStringExtra("root")).child(auth.getCurrentUser().getUid())
+                        .child("state").setValue("requested").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        NotificationData notificationData=new NotificationData(auth.getCurrentUser().getUid(),"request",getIntent().getStringExtra("root"));
+                        databaseReference.child("notifications").push().setValue(notificationData);
+                    }
+                });
+
+                Toast.makeText(getApplicationContext(), "Request resent", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(new Intent(MyRequestsOptionActivity.this, ClientHomeScreenActivity.class));
+            }
         });
 
     }

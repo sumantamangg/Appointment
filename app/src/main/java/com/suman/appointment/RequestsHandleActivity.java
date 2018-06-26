@@ -177,6 +177,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
+                                progressDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), "No meeting!", Toast.LENGTH_SHORT).show();
                             }
                             else {
@@ -190,8 +191,9 @@ public class RequestsHandleActivity extends AppCompatActivity {
                                     if(meetinginfo.get(i).state.equals("accepted")){
                                         Intent intent = new Intent(RequestsHandleActivity.this, PopupshowActivity.class);
                                         intent.putExtra("fd",date);
-                                        intent.putExtra("date", date);
+                                        intent.putExtra("hd", meetinginfo.get(i).heading);
                                         startActivity(intent);
+                                        progressDialog.dismiss();
                                         meetinginfo.clear();
                                     }
                                     else {
@@ -199,6 +201,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
                                         intent.putExtra("fd",date);
                                         intent.putExtra("date", date+" (Pending Requests)");
                                         intent.putExtra("backbtn","rqst");
+                                        progressDialog.dismiss();
                                         startActivity(intent);
                                         meetinginfo.clear();
                                     }
