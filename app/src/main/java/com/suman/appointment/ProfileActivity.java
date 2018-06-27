@@ -1,5 +1,6 @@
 package com.suman.appointment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Button applyupdatebtn;
     private TextView txt1;
     private TextView txt0;
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         applyupdatebtn = findViewById(R.id.applyupdatebtn);
         txt0 = findViewById(R.id.txt0);
         txt1 = findViewById(R.id.txt1);
+        progressDialog = new ProgressDialog(this);
         //view_email = user.getEmail().toString();
         databaseReference.child("users").child(u_id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -81,11 +85,13 @@ public class ProfileActivity extends AppCompatActivity {
                 nationalityfield.setText(userInformation.nationality);
                 dobfield.setText(userInformation.dob);
                 if(userInformation.company.isEmpty()){
-                    companyfield.setText("-");
-                    positionfield.setText("-");
+                    companyfield.setHint("empty");
+                    positionfield.setHint("empty");
                 }
-                companyfield.setText(userInformation.company);
-                positionfield.setText(userInformation.position);
+                else {
+                    companyfield.setText(userInformation.company);
+                    positionfield.setText(userInformation.position);
+                }
             }
 
             @Override
@@ -120,6 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
         applyupdatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setMessage("Please Wait.");
                 String name= view_name.getText().toString().trim();
                 String email = view_email.getText().toString().trim();
                 String phone = view_phone.getText().toString().trim();
@@ -127,15 +134,31 @@ public class ProfileActivity extends AppCompatActivity {
                 String position = positionfield.getText().toString().trim();
                 String address = addressfield.getText().toString().trim();
                 String password = passwordfield.getText().toString().trim();
-                if(name.isEmpty() || (email.isEmpty()) || (phone.isEmpty()) || (company.isEmpty())|| (position.isEmpty()) || (address.isEmpty())){
+                if(name.isEmpty() || (email.isEmpty()) || (phone.isEmpty()) || (address.isEmpty())){
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),"please fill out all the fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(!company.isEmpty()){
+                    if(position.isEmpty()){
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"Please fill out Your position at work as well.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                if(!position.isEmpty()){
+                    if(company.isEmpty()){
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"Please fill out where you work as well.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
                 if(password.isEmpty()){
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "please enter correct password", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
-                    Log.i("jkjjkk"   , "onClick: "+password);
+                    progressDialog.show();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     String[] arr = {name,email,phone,company,position,address,password};
                     reauthenticateuser(email,password,arr);
@@ -163,9 +186,13 @@ public class ProfileActivity extends AppCompatActivity {
                             databaseReference.child("users").child(user.getUid()).child("address").setValue(arr[5]);
                         }
                     });
-
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Changes Applied.",Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(new Intent(ProfileActivity.this,MainActivity.class));
                 }
                 else {
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),"Password is not matching ",Toast.LENGTH_SHORT).show();
                     return;
                 }

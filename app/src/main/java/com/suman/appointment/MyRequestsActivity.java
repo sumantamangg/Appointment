@@ -42,7 +42,6 @@ public class MyRequestsActivity extends AppCompatActivity {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 for (DataSnapshot child:children)
                     {
-                       // Log.i("jkjj", "onDataChange: "+child.getKey());
                         keys1.add(child.getKey());
 
                 }

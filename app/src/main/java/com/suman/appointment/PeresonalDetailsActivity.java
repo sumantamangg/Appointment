@@ -103,7 +103,7 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
                         return;
                     }
                 }
-                if (!TextUtils.isEmpty(company)) {
+                if (TextUtils.isEmpty(company)) {
                     UserInformation userInformation = new UserInformation(address, nationality, company, position, ph, name, email, dob);
                     databaseReference.child("users").child(u_id).setValue(userInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -114,9 +114,6 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         showalert();
-//                                        Toast.makeText(getApplicationContext(), "signup completed", Toast.LENGTH_SHORT).show();
-//                                        Intent intent = new Intent(PeresonalDetailsActivity.this, MainActivity.class);
-//                                        startActivity(intent);
                                     }
                                 });
                             } else {
@@ -166,7 +163,6 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
         //super.onBackPressed();
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Please complete your signup");
-        //dialog.setMessage("Do you still wish to go back?");
         dialog.setCancelable(false);
         dialog.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
@@ -186,7 +182,5 @@ public class PeresonalDetailsActivity extends AppCompatActivity {
         });
         dialog.show();
 
-        //startActivity(new Intent(SignupActivity.this,MainActivity.class));
-        //finish();
     }
 }

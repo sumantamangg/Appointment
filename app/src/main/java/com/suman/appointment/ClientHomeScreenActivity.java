@@ -31,6 +31,7 @@ public class ClientHomeScreenActivity extends AppCompatActivity {
     private Button requestbtn;
     private Button myrequestsbtn;
     private Button logoutbtn;
+    private Button settingbtn;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     FirebaseAuth auth;
@@ -43,6 +44,7 @@ public class ClientHomeScreenActivity extends AppCompatActivity {
         profilebtn = (Button) findViewById(R.id.profilebtn);
         myrequestsbtn = (Button) findViewById(R.id.myrequestsbtn);
         logoutbtn = (Button) findViewById(R.id.logoutbtn);
+        settingbtn = findViewById(R.id.settingbtn);
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
@@ -97,6 +99,12 @@ public class ClientHomeScreenActivity extends AppCompatActivity {
                 auth.signOut();
                 startActivity(new Intent(ClientHomeScreenActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+        settingbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ClientHomeScreenActivity.this, SettingsActivity.class));
             }
         });
     }

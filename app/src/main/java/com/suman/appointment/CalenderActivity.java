@@ -29,9 +29,6 @@ import java.util.List;
 
 public class CalenderActivity extends AppCompatActivity {
 
-
-    //private TextView tm;
-    //private TextView ym;
     private CalendarView mcalendarview;
     private FirebaseAuth auth;
     final List<MeetingInformation> meetinginfo = new ArrayList<MeetingInformation>();
@@ -43,14 +40,6 @@ public class CalenderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender);
 
-        //tm = (TextView) findViewById(R.id.temp);
-        //ym = (TextView) findViewById(R.id.temp1);
-//        if(auth.getCurrentUser()==null){
-//            finish();
-//            Intent i = new Intent( CalenderActivity.this, MainActivity.class);
-//            startActivity(i);
-//        }
-//
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             Intent i = new Intent(CalenderActivity.this, MainActivity.class);
@@ -91,8 +80,6 @@ public class CalenderActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    //tm.setText("Date= "+day);
-                    //ym.setText("unique id="+u_id);
                     databaseReference.child("requests").child(u_id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -141,14 +128,6 @@ public class CalenderActivity extends AppCompatActivity {
 
             }
         });
-//        @Override
-//        public void onBackPressed()
-//        {
-//            super.onBackPressed();
-//            startActivity(new Intent(ThisActivity.this, NextActivity.class));
-//            finish();
-//
-//        }
 
     }
     @Override
@@ -170,8 +149,6 @@ public class CalenderActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (!user.isEmailVerified()) {
             SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-            //boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
-            //if (isFirstRun) {
                 AlertDialog.Builder dialogg = new AlertDialog.Builder(this);
                 dialogg.setTitle("Verify Email");
                 dialogg.setMessage("Please verify your email to proceed with the app");
@@ -183,9 +160,14 @@ public class CalenderActivity extends AppCompatActivity {
                         startActivity(new Intent(CalenderActivity.this, EmailVerificationActivity.class));
                     }
                 });
+            dialogg.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    startActivity(new Intent(CalenderActivity.this, MainActivity.class));
+                }
+            });
                 dialogg.show();
-                //Toast.makeText(MainActivity.this, "you haven't verified your Email.", Toast.LENGTH_SHORT).show();
-            //}
         }
 
     }

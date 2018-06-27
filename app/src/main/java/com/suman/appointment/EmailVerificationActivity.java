@@ -82,8 +82,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
         editemailbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//              emailfield.setEnabled(true);
-//              emailfield.setTextIsSelectable(true);
                 emailfield.setFocusableInTouchMode(true);
                 passwordfield.setVisibility(view.VISIBLE);
 

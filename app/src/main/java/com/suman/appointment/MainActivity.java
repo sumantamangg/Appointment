@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
@@ -49,17 +50,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;
     private MyPreferences appPreference;
+    private TextView forgotpass;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     List<UserInformation> userinfo = new ArrayList<>();
-
-
-//    private Button btn_signin,btn_signup;
-//    private DatabaseReference mDatabase;
-//    private EditText nameField;
-//    private EditText email_Field;
-//    private TextView view_name;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         mPasswordField = (EditText) findViewById(R.id.password_field);
         btn_signup = (Button) findViewById(R.id.signup);
         btn_login = (Button) findViewById(R.id.signin);
+        forgotpass = findViewById(R.id.forgotpass);
+        forgotpass.setTextColor(Color.RED);
         progressDialog = new ProgressDialog(this);
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
@@ -192,9 +189,7 @@ public class MainActivity extends AppCompatActivity {
                                         });
 
                                     }
-//                                Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
-//                                finish();
-//                                startActivity(new Intent(getApplicationContext(), TempNavActivity.class));
+
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Unuccessfull", Toast.LENGTH_SHORT).show();
                                     return;
@@ -214,50 +209,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-//        btn_signup =(Button) findViewById(R.id.signup);
-//        btn_signin = (Button) findViewById(R.id.signin);
-//        nameField = (EditText) findViewById(R.id.name_field);
-//        email_Field = (EditText) findViewById(R.id.email_field);
-//        view_name= (TextView) findViewById(R.id.name_view);
-//        mDatabase = FirebaseDatabase.getInstance().getReference().child("name");// to append to child branch
-//
-//        //mDatabase = FirebaseDatabase.getInstance().getReference();
-//        //to fetch value from database addvalueeventlistner is used.
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String name= dataSnapshot.getValue().toString();
-//                view_name.setText("name: " +name);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//        //for button clicking
-//        btn_signup.setOnClickListener(new View.OnClickListener() {
-//             public void onClick(View view) {
-//                 String name = nameField.getText().toString().trim();
-//                 String email = email_Field.getText().toString().trim();
-//                 //mDatabase.push().setValue(name); //push inserts the value to a random key
-//                 HashMap<String, String> dataMap= new HashMap<String, String>();
-//                 dataMap.put("name",name);
-//                 dataMap.put("email",email);
-//                 mDatabase.push().setValue(dataMap);
-//                 //mDatabase.child("name").setValue(name);  //to store just one value
-//
-//             }
-//        });
-//        btn_signin.setOnClickListener(new View.OnClickListener() {
-//
-//            public void onClick(View view) {
-//                String name = nameField.getText().toString().trim();
-//                mDatabase.child("name").setValue(name+" tamang");
-//            }
-//        });
+        forgotpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, PasswordRecoveryActivity.class));
+            }
+        });
 
     }
 

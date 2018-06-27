@@ -77,7 +77,8 @@
         <activity
             android:name=".OldDataActivity"
             android:label="Request"
-            android:theme="@style/AppTheme.CustomTheme" ></activity>
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".PasswordRecoveryActivity"></activity>
     </application>
 
 </manifest>

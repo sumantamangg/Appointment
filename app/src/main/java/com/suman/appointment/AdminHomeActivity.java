@@ -86,7 +86,6 @@ public class AdminHomeActivity extends AppCompatActivity {
         settingsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getApplicationContext(), "You are on Beta Testing!!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(AdminHomeActivity.this, SettingsActivity.class));
             }
         });

@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/addressfield"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -23,7 +23,7 @@
 
     <EditText
         android:id="@+id/nationalityfield"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
@@ -37,12 +37,12 @@
 
     <EditText
         android:id="@+id/dobfield"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="DATE OF BIRTH"
+        android:hint="DATE OF BIRTH (yyyy-mm-dd)"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="@+id/nationalityfield"
         app:layout_constraintHorizontal_bias="0.0"
@@ -65,7 +65,7 @@
 
     <EditText
         android:id="@+id/companyfield"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
@@ -79,7 +79,7 @@
 
     <EditText
         android:id="@+id/positionfield"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="24dp"

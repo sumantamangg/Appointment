@@ -80,8 +80,6 @@ public class PopupshowActivity3 extends AppCompatActivity {
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //progressDialog.setMessage("Please Wait!");
-                //progressDialog.show();
                 databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -289,7 +287,6 @@ public class PopupshowActivity3 extends AppCompatActivity {
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
-                                //Log.i("jkjjj", "ch_date: "+child_date);
                                 /**  if the current child date is before the current date execute the following command.**/
                                 if (currentDt.after(ch_date)) {
                                     //Log.i("jkjjj", "yes it is after: ");
@@ -327,8 +324,6 @@ public class PopupshowActivity3 extends AppCompatActivity {
                     });
                     databaseReference.child("dbms").setValue(currentdate);
                     Log.i("jkjjj", "done: ");
-                    // one month ko data delete garnu paryo.
-
 
                 }
             }

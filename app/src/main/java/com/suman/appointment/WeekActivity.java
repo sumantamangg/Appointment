@@ -123,8 +123,6 @@ public class WeekActivity extends AppCompatActivity {
         printweekday(fd6,headingfield6,date6);  //call printing function
         printweekday(fd7,headingfield7,date7);  //call printing function
 
-        //ArrayAdapter<MeetingInformation> arrayAdapter = new ArrayAdapter<MeetingInformation>(this, android.R.layout.simple_list_item_1, meetinginfo );
-
 
     }
     public  void printweekday(final String fd, final TextView hf, final String date){
@@ -141,15 +139,11 @@ public class WeekActivity extends AppCompatActivity {
                     for (DataSnapshot child : children) {
                         MeetingInformation meetingInformation = child.getValue(MeetingInformation.class);
                         meetinginfo.add(meetingInformation);
-                        //headingfield1.setText(meetingInformation.agenda);
-                        //headingfield1.setText(meetingInformation.agenda);
                     }
                     int indicate = 0;
                     for (int i = 0; i < meetinginfo.size(); i++) {
                         if (meetinginfo.get(i).state.equals("accepted")) {
                             hf.setText(meetinginfo.get(i).heading);
-                            //hf.setTextColor(Color.GREEN);
-
                             indicate=1;
                             meetinginfo.clear();
                             break;
@@ -163,7 +157,6 @@ public class WeekActivity extends AppCompatActivity {
                         hf.setTextColor(Color.RED);
                     }
 
-                    //Log.i("testetes", "onDataChange: "+meetinginfo.get(0).agenda);
                 }
             }
 

@@ -68,7 +68,6 @@ public class PopupshowActivity extends AppCompatActivity {
                 }
                 for (int i = 0; i < meetinginfo.size(); i++) {
                        if (meetinginfo.get(i).state.equals("accepted")) {
-                            //headingfield.setText(meetinginfo.get(i).getClass().toString());
                            headingfield.setText(meetinginfo.get(i).heading);
                             agendafield.setText(meetinginfo.get(i).agenda);
                             databaseReference.child("users").child(keys.get(i)).child("name").addValueEventListener(new ValueEventListener() {
@@ -155,7 +154,6 @@ public class PopupshowActivity extends AppCompatActivity {
                             if(meetingInformation.heading.equals(hd) && meetingInformation.state.equals("accepted")) {
                                 databaseReference.child("requests").child(fd).child(child.getKey()).child("state").setValue("rejected");
                                 final String uid = child.getKey();
-                                //databaseReference.child("notifications").child(child.getKey()).child("uqid").setValue("rejected");
                                 databaseReference.child("notifications").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {

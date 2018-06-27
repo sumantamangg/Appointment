@@ -215,19 +215,7 @@ public class RequestsHandleActivity extends AppCompatActivity {
                         }
                     });
 
-
-//                    Intent i = new Intent(RequestsHandleActivity.this, ReqyestHandlePopup.class);
-//                    i.putExtra("MY_kEY", d1);
-//                    i.putExtra("date", yr + "-" + mnth + "-" + day);
-//                    startActivity(i);
                 }
-
-//                Intent i = new Intent(RequestsHandleActivity.this, PopupActivity.class);
-//                i.putExtra("MY_kEY",u_id);
-//                i.putExtra("date",yr+"-"+mnth+"-"+day);
-//                startActivity(i);
-
-
             }
 
 

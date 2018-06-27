@@ -39,11 +39,6 @@ public class PopupshowActivity2 extends AppCompatActivity {
 
        getSupportActionBar().setTitle(getIntent().getStringExtra("date"));
         tableAdd = findViewById(R.id.table_add);
-//        DisplayMetrics dm = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(dm);
-//        int width = dm.widthPixels;
-//        int height = dm.heightPixels;
-//        getWindow().setLayout((int) (width * .8), (int) (height * .6));
 
         final String fd = getIntent().getStringExtra("fd");
         databaseReference.child("requests").child(fd).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -56,7 +51,6 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     meetinginfo.add(meetingInformation);
                     keys.add(child.getKey());
                 }
-                // addView(meetinginfo,givemeobj(keys));
                 givemeobj(meetinginfo, keys,fd);
             }
 
@@ -85,11 +79,6 @@ public class PopupshowActivity2 extends AppCompatActivity {
             party.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Bundle args = new Bundle();
-//                    args.putSerializable("meetinginfo",(Serializable)meetinginfo.get(finalI1));
-//                    args.putSerializable("userinfo", (Serializable) userinfo.get(finalI));
-//                    Intent intent = new Intent(PopupshowActivity2.this, PopupshowActivity3.class);
-//                    intent.putExtra("BUNDLE",args);
                     Intent intent = new Intent(PopupshowActivity2.this, PopupshowActivity3.class);
                     intent.putExtra("name",userinfo.get(finalI).name);
                     intent.putExtra("heading",meetinginfo.get(finalI).heading);
@@ -98,8 +87,6 @@ public class PopupshowActivity2 extends AppCompatActivity {
                     intent.putExtra("fd",fd);
                     intent.putExtra("state",meetinginfo.get(finalI).state);
                     intent.putExtra("backbtn",getIntent().getStringExtra("backbtn"));
-                    //meetinginfo.clear();
-                    //userinfo.clear();
                     startActivity(intent);
                 }
             });
@@ -139,52 +126,3 @@ public class PopupshowActivity2 extends AppCompatActivity {
 
 
 }
-
-    /*
-        public void init(List<MeetingInformation> meetinginfo) {
-            TableLayout stk = (TableLayout) findViewById(R.id.table_main);
-            TableRow tbrow0 = new TableRow(this);
-            TableLayout.LayoutParams tableRowParams=
-                    new TableLayout.LayoutParams
-                            (TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.WRAP_CONTENT);
-
-
-            tbrow0.setPadding(20,20,20,20);
-            tbrow0.setLayoutParams(tableRowParams);
-
-            TextView tv0 = new TextView(this);
-            tv0.setText(" Sl.No");
-            tv0.setTextColor(Color.WHITE);
-            tbrow0.addView(tv0);
-            TextView tv1 = new TextView(this);
-            tv1.setText(" TITLE ");
-            tv1.setTextColor(Color.WHITE);
-            tbrow0.addView(tv1);
-            TextView tv2 = new TextView(this);
-            tv2.setText(" PARTY ");
-            tv2.setTextColor(Color.WHITE);
-            tbrow0.addView(tv2);
-            stk.addView(tbrow0);
-            for (int i = 0; i <meetinginfo.size(); i++) {
-                TableRow tbrow = new TableRow(this);
-                tbrow.setLayoutParams(tableRowParams);
-                TextView t1v = new TextView(this);
-                t1v.setText("" + i);
-                t1v.setTextColor(Color.WHITE);
-                t1v.setGravity(Gravity.CENTER);
-                tbrow.addView(t1v);
-                TextView t2v = new TextView(this);
-                t2v.setText(meetinginfo.get(i).heading);
-                t2v.setTextColor(Color.WHITE);
-                t2v.setGravity(Gravity.CENTER);
-                tbrow.addView(t2v);
-                TextView t3v = new TextView(this);
-                t3v.setText(meetinginfo.get(i).state);
-                t3v.setTextColor(Color.WHITE);
-                t3v.setGravity(Gravity.CENTER);
-                tbrow.addView(t3v);
-                stk.addView(tbrow);
-            }
-
-        }
-    */

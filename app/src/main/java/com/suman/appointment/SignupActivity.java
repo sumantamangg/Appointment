@@ -99,14 +99,6 @@ public class SignupActivity extends AppCompatActivity {
                 }
                     final UserInformation userinformation = new UserInformation(name, ph, email);
 
-//                Intent intent = new Intent(SignupActivity.this, PeresonalDetailsActivity.class);
-//                                    intent.putExtra("email",email);
-//                                    intent.putExtra("name",name);
-//                                    intent.putExtra("phone",ph);
-//                                    intent.putExtra("pass",pass);
-//                                    intent.putExtra("msg","Fill up the following Information to complete your sidnup.");
-//                                    finish();
-//                                    startActivity(intent);
                 auth.createUserWithEmailAndPassword(email, pass)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -140,19 +132,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
     public void  onBackPressed(){
         super.onBackPressed();
