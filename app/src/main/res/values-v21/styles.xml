@@ -1,3 +1,7 @@
 <resources>
 
+    <style name="AppTheme" parent="AppTheme.Base">
+        <item name="android:colorAccent">#FFFF00</item>
+
+    </style>
 </resources>

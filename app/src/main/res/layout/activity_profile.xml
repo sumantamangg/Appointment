@@ -72,13 +72,15 @@
 
         <TextView
             android:id="@+id/textView19"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:text="Personal Details"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:background="#3F51B5"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -297,6 +299,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt1"
             app:layout_constraintVertical_bias="0.0"
             tools:visibility="gone" />
+
 
 
     </android.support.constraint.ConstraintLayout>
