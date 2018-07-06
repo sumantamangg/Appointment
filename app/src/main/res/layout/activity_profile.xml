@@ -74,12 +74,10 @@
             android:id="@+id/textView19"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:background="#3F51B5"
+            android:gravity="center"
             android:text="Personal Details"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:background="#3F51B5"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +86,7 @@
         <TextView
             android:id="@+id/texteditdd"
             android:layout_width="wrap_content"
-            android:layout_height="14dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:text="Company"
@@ -136,7 +134,7 @@
 
         <EditText
             android:id="@+id/passwordfield"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
@@ -155,10 +153,10 @@
 
         <EditText
             android:id="@+id/name_field"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:focusable="false"
@@ -170,13 +168,13 @@
 
         <EditText
             android:id="@+id/ph_field"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="24dp"
             android:ems="10"
             android:focusable="false"
-            android:inputType="textPersonName"
+            android:inputType="phone"
             android:text="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.05"
@@ -185,13 +183,13 @@
 
         <EditText
             android:id="@+id/email_field"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="12dp"
             android:ems="10"
             android:focusable="false"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:text="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -200,7 +198,7 @@
 
         <EditText
             android:id="@+id/companyf"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
@@ -214,7 +212,7 @@
 
         <EditText
             android:id="@+id/postitionf"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
@@ -228,13 +226,13 @@
 
         <EditText
             android:id="@+id/addressf"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:focusable="false"
-            android:inputType="textPersonName"
+            android:inputType="textPostalAddress"
             android:text="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -243,7 +241,7 @@
 
         <EditText
             android:id="@+id/nationalityf"
-            android:layout_width="213dp"
+            android:layout_width="0dp"
             android:layout_height="49dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
@@ -258,13 +256,13 @@
 
         <EditText
             android:id="@+id/dobfield"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:focusable="false"
-            android:inputType="textPersonName"
+            android:inputType="date"
             android:text="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -299,7 +297,6 @@
             app:layout_constraintTop_toBottomOf="@+id/txt1"
             app:layout_constraintVertical_bias="0.0"
             tools:visibility="gone" />
-
 
 
     </android.support.constraint.ConstraintLayout>

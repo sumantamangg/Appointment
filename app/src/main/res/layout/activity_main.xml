@@ -73,6 +73,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
         android:text="Forgot Password?"
+        android:textColor="#b70200"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/password_field"
